@@ -33,13 +33,13 @@ public class KameraAcAction extends AbstractAction{
 		setEnabled(false);
 	    int row = table.getSelectedRow();
 	    Kullanici secilenKullanici = kullaniciTableModel.kullaniciAl(row);
-	    UygulamaCalistir.kullanici = secilenKullanici;
+	    App.kullanici = secilenKullanici;
 	    //UygulamaCalistir.GUIYuzBulma();
 	    //UygulamaCalistir.loadCascade();
 	    //UygulamaCalistir.kameraAc();
 
-	    UygulamaCalistir.yuzGoruntuleriAyarla();
-	    UygulamaCalistir.dialog.setVisible(true);
+	    App.yuzGoruntuleriAyarla();
+	    App.dialog.setVisible(true);
 	}
 	  
 }

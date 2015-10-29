@@ -24,7 +24,6 @@ import javax.swing.JTable;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
-import org.opencv.core.Core;
 import org.opencv.core.Mat;
 import org.opencv.core.MatOfRect;
 import org.opencv.core.Point;
@@ -43,8 +42,8 @@ import com.zk.util.ImageProcessor;
 import com.zk.yuz.Yuz;
 import com.zk.yuz.YuzDAO;
 import com.zk.yuz.YuzTableModel;
-
-public class UygulamaCalistir {
+import org.opencv.core.*;
+public class App {
 	static{ System.loadLibrary(Core.NATIVE_LIBRARY_NAME); 
 	}
 	
@@ -161,7 +160,7 @@ public class UygulamaCalistir {
 			
 			yuzTable.getSelectionModel().addListSelectionListener(new ListSelectionListener(){
 		        public void valueChanged(ListSelectionEvent event) {
-		            secilenGoruntuID = (int) yuzTable.getValueAt(yuzTable.getSelectedRow(), 0);
+		            secilenGoruntuID = (int) (yuzTable.getValueAt(yuzTable.getSelectedRow(), 0));
 		        	// do some actions here, for example
 		            // print first column value from selected row
 		            //System.out.println(yuzTable.getValueAt(yuzTable.getSelectedRow(), 0).toString());

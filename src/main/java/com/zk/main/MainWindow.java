@@ -63,7 +63,7 @@ public final class MainWindow {
   
   private void buildGui(){
     JFrame frame = new JFrame(
-      UygulamaCalistir.APP_NAME + 
+      App.APP_NAME + 
       " - " + ("Kullan�c�lar")
     ); 
     

@@ -131,7 +131,7 @@ public final class UiUtil {
   */
   public static String getDialogTitle(String aSpecificDialogName){
     Args.checkForContent(aSpecificDialogName);
-    StringBuilder result = new StringBuilder(UygulamaCalistir.APP_NAME);
+    StringBuilder result = new StringBuilder(App.APP_NAME);
     result.append(": ");
     result.append(aSpecificDialogName);
     return result.toString(); 

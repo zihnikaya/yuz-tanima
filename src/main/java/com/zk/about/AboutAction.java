@@ -40,8 +40,8 @@ public final class AboutAction extends AbstractAction {
   private static final Logger fLogger = Util.getLogger(AboutAction.class);
 
   private String getMessageText() {
-    StringBuilder result = new StringBuilder(UygulamaCalistir.APP_NAME + " ");
-    result.append(UygulamaCalistir.APP_VERSION);
+    StringBuilder result = new StringBuilder(App.APP_NAME + " ");
+    result.append(App.APP_VERSION);
     result.append(" - Zihni Kaya'n�n y�ksek lisans tezidir.");
     result.append(NEW_LINE);
     result.append(NEW_LINE);
