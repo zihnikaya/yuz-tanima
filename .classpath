@@ -1,20 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
-	<classpathentry including="**/*.java" kind="src" output="target/test-classes" path="src/test/java"/>
-	<classpathentry excluding="**/*.java" kind="src" output="target/test-classes" path="src/test/resources"/>
 	<classpathentry including="**/*.java" kind="src" path="src/main/java"/>
 	<classpathentry excluding="**/*.java" kind="src" path="src/main/resources"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
-	<classpathentry kind="var" path="M2_REPO/junit/junit/3.8.1/junit-3.8.1.jar"/>
+	<classpathentry kind="var" path="M2_REPO/junit/junit/3.8.1/junit-3.8.1.jar" sourcepath="M2_REPO/junit/junit/3.8.1/junit-3.8.1-sources.jar"/>
 	<classpathentry kind="var" path="M2_REPO/com/zk/opencv/opencvjar/3.0.0/opencvjar-3.0.0.jar">
 		<attributes>
-			<attribute name="org.eclipse.jdt.launching.CLASSPATH_ATTR_LIBRARY_PATH_ENTRY" value="/home/zihni/workspace/yuz-tanima/target/natives"/>
+			<attribute name="org.eclipse.jdt.launching.CLASSPATH_ATTR_LIBRARY_PATH_ENTRY" value="C:/Users/pc/workspace/yuz-tanima/target/natives"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="var" path="M2_REPO/com/zk/opencv/opencvjar-runtime/3.0.0/opencvjar-runtime-3.0.0-natives-linux-x86.jar">
-		<attributes>
-			<attribute name="org.eclipse.jdt.launching.CLASSPATH_ATTR_LIBRARY_PATH_ENTRY" value="/home/zihni/workspace/yuz-tanima/target/natives"/>
-		</attributes>
-	</classpathentry>
+	<classpathentry kind="var" path="M2_REPO/com/zk/opencv/opencvjar-runtime/3.0.0/opencvjar-runtime-3.0.0-natives-windows.jar"/>
 	<classpathentry kind="output" path="target/classes"/>
 </classpath>

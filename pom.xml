@@ -7,6 +7,10 @@
   <name>Yuz tanima</name>
   <repositories>
     <repository>
+      <id>javaopencvbook</id>
+      <url>https://raw.github.com/JavaOpenCVBook/code/maven2/</url>
+    </repository>  
+    <repository>
       <snapshots>
         <enabled>false</enabled>
       </snapshots>
@@ -15,12 +19,15 @@
       <url>https://repo.maven.apache.org/maven2</url>
     </repository>
   </repositories>
-
  <build>
     <plugins>  
-            <plugin>
+      <plugin>
         <artifactId>maven-compiler-plugin</artifactId>
         <version>3.1</version>
+                <configuration>
+                    <source>1.7</source>
+                    <target>1.7</target>
+                </configuration>
         <executions>
           <execution>
             <id>default-testCompile</id>
@@ -37,8 +44,8 @@
             </goals>
           </execution>
         </executions>
-      </plugin>
-      
+      </plugin>   
+         
       <plugin>
          <artifactId>maven-jar-plugin</artifactId>
 		 <version>2.4</version>
@@ -110,7 +117,7 @@
 		<groupId>com.zk.opencv</groupId>
 		<artifactId>opencvjar-runtime</artifactId>
 		<version>3.0.0</version>
-		<classifier>natives-linux-x86</classifier>
+		<classifier>natives-windows</classifier>
 	</dependency>
   </dependencies>
   
