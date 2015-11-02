@@ -117,7 +117,7 @@
 		<groupId>com.zk.opencv</groupId>
 		<artifactId>opencvjar-runtime</artifactId>
 		<version>3.0.0</version>
-		<classifier>natives-windows</classifier>
+		<classifier>natives-linux-x86</classifier>
 	</dependency>
   </dependencies>
   

@@ -35,7 +35,6 @@ public class OrtGoruntu {
 	}
 	
     public static void displayImage(Image img2){   
-	    //BufferedImage img=ImageIO.read(new File("/HelloOpenCV/lena.png"));
 	    ImageIcon icon=new ImageIcon(img2);
 	    JFrame frame=new JFrame();
 	    frame.setLayout(new FlowLayout());        
