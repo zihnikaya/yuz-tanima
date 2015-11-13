@@ -194,7 +194,7 @@ public final class KullaniciDAO {
 		     String ad = rs.getString("ad");
 		     String soyad = rs.getString("soyad");
 		     String bolum = rs.getString("bolum");
-		     Kullanici kullanici = new Kullanici(id, ogrNo, ad, soyad,bolum);
+		     Kullanici kullanici = new Kullanici(id, ogrNo, ad, soyad, bolum);
 		     fTable.put(kullanici.idAl(), kullanici);
 	      }
 	      //STEP 6: Clean-up environment
