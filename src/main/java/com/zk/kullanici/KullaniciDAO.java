@@ -25,7 +25,7 @@ public final class KullaniciDAO {
    // PRIVATE 
    // JDBC driver name and database URL
    static final String JDBC_DRIVER = "com.mysql.jdbc.Driver";  
-   static final String DB_URL = "jdbc:mysql://localhost/yuz_tanima";
+   static final String DB_URL = "jdbc:mysql://localhost/yuz_tanima?useUnicode=true&characterEncoding=UTF-8";
 
    //  Database credentials
    static final String USER = "root";
@@ -35,11 +35,8 @@ public final class KullaniciDAO {
    Statement stmt = null;   
 	   
   private static final Map<String, Kullanici> fTable = new LinkedHashMap<>();
-  private static int fNextId = 0;
-  private static final String MOVIES_FILE_NAME = "movie_list_for_";
   private static final String DELIMITER = "|";
   private static final String NULL = "NULL";
-  private static final Logger fLogger = Util.getLogger(KullaniciDAO.class);
   private final static Charset ENCODING = StandardCharsets.UTF_8;	
   
   public void KullaniciDao(){
@@ -64,10 +61,11 @@ public final class KullaniciDAO {
 	      //STEP 4: Execute a query
 	      //stmt = conn.createStatement();
 	      
-	      PreparedStatement pstmt = conn.prepareStatement("INSERT INTO kullanici (ogrenci_no, ad, soyad) VALUES (?, ?, ?)", PreparedStatement.RETURN_GENERATED_KEYS);
+	      PreparedStatement pstmt = conn.prepareStatement("INSERT INTO kullanici (ogrenci_no, ad, soyad,bolum) VALUES (?, ?, ?, ?)", PreparedStatement.RETURN_GENERATED_KEYS);
 	      pstmt.setString(1, aKullanici.ogrNoAl());
 	      pstmt.setString(2, aKullanici.adAl());
 	      pstmt.setString(3, aKullanici.soyadAl());
+	      pstmt.setString(4, aKullanici.bolumAl());
 	      pstmt.executeUpdate();
 	      
 	      ResultSet keys = pstmt.getGeneratedKeys(); 
@@ -95,7 +93,6 @@ public final class KullaniciDAO {
 	   }//end try
 	}  
 
-  /** Change an existing {@link Kullanici}. */
   void degistir(Kullanici aKullanici) {
 	   try{
 		      //STEP 2: Register JDBC driver
@@ -107,11 +104,12 @@ public final class KullaniciDAO {
 	      //STEP 4: Execute a query
 	      //stmt = conn.createStatement();
 	      
-	      PreparedStatement pstmt = conn.prepareStatement("UPDATE kullanici SET ogrenci_no=?, ad=?, soyad=? WHERE id=?");
+	      PreparedStatement pstmt = conn.prepareStatement("UPDATE kullanici SET ogrenci_no=?, ad=?, soyad=?, bolum=? WHERE id=?");
 	      pstmt.setString(1, aKullanici.ogrNoAl());
 	      pstmt.setString(2, aKullanici.adAl());
 	      pstmt.setString(3, aKullanici.soyadAl());
-	      pstmt.setString(4, aKullanici.idAl());
+	      pstmt.setString(4, aKullanici.bolumAl());
+	      pstmt.setString(5, aKullanici.idAl());
 	      pstmt.executeUpdate();	      
 	      bul();
 	   }catch(SQLException se){
@@ -135,8 +133,6 @@ public final class KullaniciDAO {
 	      }//end finally try
 	   }//end try 
   }
-
-
 
   /** Change an existing {@link Kullanici}. */
   void sil(Kullanici aKullanici) {
@@ -188,7 +184,7 @@ public final class KullaniciDAO {
 	      //STEP 4: Execute a query
 	      stmt = conn.createStatement();
 	      String sql;
-	      sql = "SELECT id, ogrenci_no, ad, soyad FROM kullanici";
+	      sql = "SELECT id, ogrenci_no, ad, soyad,bolum FROM kullanici";
 	      ResultSet rs = stmt.executeQuery(sql);
 	      //STEP 5: Extract data from result set
 	      while(rs.next()){
@@ -197,7 +193,8 @@ public final class KullaniciDAO {
 	    	 String ogrNo = rs.getString("ogrenci_no");
 		     String ad = rs.getString("ad");
 		     String soyad = rs.getString("soyad");
-		     Kullanici kullanici = new Kullanici(id, ogrNo, ad, soyad);
+		     String bolum = rs.getString("bolum");
+		     Kullanici kullanici = new Kullanici(id, ogrNo, ad, soyad,bolum);
 		     fTable.put(kullanici.idAl(), kullanici);
 	      }
 	      //STEP 6: Clean-up environment
@@ -237,7 +234,7 @@ public final class KullaniciDAO {
 	      //STEP 4: Execute a query
 	      stmt = conn.createStatement();
 	      String sql;
-	      sql = "SELECT id, ogrenci_no, ad, soyad FROM kullanici WHERE id='"+aId+"'";
+	      sql = "SELECT id, ogrenci_no, ad, soyad,bolum FROM kullanici WHERE id='"+aId+"'";
 	      ResultSet rs = stmt.executeQuery(sql);
 	      //STEP 5: Extract data from result set
 	      rs.next();
@@ -246,7 +243,8 @@ public final class KullaniciDAO {
     	  String ogrNo = rs.getString("ogrenci_no");
 	      String ad = rs.getString("ad");
 	      String soyad = rs.getString("soyad");
-	      Kullanici kullanici = new Kullanici(id, ogrNo, ad, soyad);
+	      String bolum = rs.getString("bolum");
+	      Kullanici kullanici = new Kullanici(id, ogrNo, ad, soyad,bolum);
 		  fTable.put(kullanici.idAl(), kullanici);
 	      
 	      //STEP 6: Clean-up environment
@@ -286,7 +284,7 @@ public final class KullaniciDAO {
 	      //STEP 4: Execute a query
 	      stmt = conn.createStatement();
 	      String sql;
-	      sql = "SELECT id, ogrenci_no, ad, soyad FROM kullanici WHERE ogrenci_no='"+ogrNo+"'";
+	      sql = "SELECT id, ogrenci_no, ad, soyad,bolum FROM kullanici WHERE ogrenci_no='"+ogrNo+"'";
 	      ResultSet rs = stmt.executeQuery(sql);
 	      //STEP 5: Extract data from result set
 	      rs.next();
@@ -295,7 +293,8 @@ public final class KullaniciDAO {
 	      //String ogrNo = rs.getString("ogrenci_no");
 	      String ad = rs.getString("ad");
 	      String soyad = rs.getString("soyad");
-	      Kullanici kullanici = new Kullanici(id, ogrNo, ad, soyad);
+	      String bolum = rs.getString("bolum");
+	      Kullanici kullanici = new Kullanici(id, ogrNo, ad, soyad, bolum);
 		  fTable.put(kullanici.idAl(), kullanici);
 	      
 	      //STEP 6: Clean-up environment
@@ -324,11 +323,6 @@ public final class KullaniciDAO {
 	   }//end try
 	}    
   
-  private static String nextId() {
-    ++fNextId;
-    return String.valueOf(fNextId);
-  }
-
   private void appendTo(StringBuilder aText, Object aField, String aAppend) {
     if (Util.textAra(Util.format(aField))) {
       aText.append(Util.format(aField));
@@ -341,10 +335,6 @@ public final class KullaniciDAO {
 
   private static String maybeNull(String aText) {
     return NULL.equals(aText) ? null : aText;
-  }
-
-  private static String getMovieFileName() {
-    return MOVIES_FILE_NAME + MainWindow.getInstance().getUserName().toLowerCase(Locale.ENGLISH) + ".txt";
   }
 
 

@@ -10,22 +10,8 @@ import java.awt.event.KeyEvent;
 
 
 public final class StandardDialog {
-	// PRIVATE
-	private JDialog fDialog;
+  private JDialog fDialog;
 
-  /**
-   Construct a standard dialog.
-   
-   @param aOwner the frame which is the owner/caller/parent of this dialog. This dialog
-   gets its icon and its position from the owner. Possibly null. It's strongly recommened to use 
-   a non-null owner.
-   @param aTitle the text to appear on the title bar of this dialog
-   @param aIsModal controls whether this dialog is modal: if <tt>true</tt>, then this
-   dialog must be dismissed before you are allowed to return to the main window.
-   @param aOnClose specifies desired behavior when this dialog closes 
-   @param aBody the body of the dialog, where the user enters information
-   @param aButtons a row of buttons appearing at the bottom of this dialog
-   */
   public StandardDialog (JFrame aOwner, String aTitle, boolean aIsModal, OnClose aOnClose, JPanel aBody, java.util.List<JButton> aButtons) {
     String title = UiUtil.getDialogTitle(aTitle);
     fDialog = new JDialog(aOwner, title, aIsModal);
@@ -42,29 +28,18 @@ public final class StandardDialog {
     addCancelByEscapeKey(aOnClose);
   }
 
-  /**
-   Display the dialog.
-    
-   <P> The dialog is not automatically displayed in the constructor. This is because some
-   callers may want to build a dialog upon startup, but only display it later. (Such a
-   style might be chosen in order to slightly improve the apparent responsiveness of the
-   application.)
-   */
   public void display() {
     UiUtil.centerAndShow(fDialog);
   }
 
-  /** Assign a default button for this dialog. */
   public void setDefaultButton(JButton aButton) {
     fDialog.getRootPane().setDefaultButton(aButton);
   }
 
-  /** Call <tt>dispose</tt> on the underlying dialog object. */
   public void dispose() {
     fDialog.dispose();
   }
 
-  /** Return the underlying dialog object.   */
   public JDialog getDialog() {
     return fDialog;
   }
@@ -86,10 +61,6 @@ public final class StandardDialog {
     return result;
   }
   
-  /**
-  Force the escape key to call the same action as the default {@link OnClose} operation
-  passed to the constructor. In some special cases, this does not always work.
- */
 private void addCancelByEscapeKey(final OnClose aOnClose) {
   String CANCEL_ACTION_KEY = "CANCEL_ACTION_KEY";
   int noModifiers = 0;

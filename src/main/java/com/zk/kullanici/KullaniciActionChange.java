@@ -20,8 +20,8 @@ public final class KullaniciActionChange extends AbstractAction  {
   
   /** Constructor. */
   public KullaniciActionChange(JFrame aFrame, JTable aTable, KullaniciTableModel aKullaniciTableModel){
-    super("Dï¿½zenle...", null );
-    putValue(SHORT_DESCRIPTION, "Kullanï¿½cï¿½yï¿½ dï¿½zenle"); 
+    super("Düzenle...", null );
+    putValue(SHORT_DESCRIPTION, "Kullanýcý düzenle"); 
     putValue(MNEMONIC_KEY, new Integer(KeyEvent.VK_E) );
     fFrame = aFrame;
     fTable = aTable;

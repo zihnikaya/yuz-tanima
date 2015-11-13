@@ -19,7 +19,7 @@ public final class KullaniciActionEkle extends AbstractAction  {
   /** Constructor. */
   public KullaniciActionEkle(JFrame aFrame){
     super("Ekle...", null );
-    putValue(SHORT_DESCRIPTION, "Yeni Kullanï¿½cï¿½ Ekle"); 
+    putValue(SHORT_DESCRIPTION, "Yeni Kullanýcý Ekle"); 
     putValue(MNEMONIC_KEY, new Integer(KeyEvent.VK_A) );
     fFrame = aFrame;
   }

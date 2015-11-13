@@ -30,11 +30,10 @@ public final class GirisView {
 		  fController = aController;
 	  }
 	  
-	  /** Show the login screen. */
 	  void girisEkraniGoster(){
 	    JFrame NO_OWNER = null;
 	    fStandardDialog = new StandardDialog(
-	      NO_OWNER, "Giriï¿½", 
+	      NO_OWNER, "Giriþ", 
 	      true, OnClose.DISPOSE, getBody(), getButtons()
 	    );
 	    fStandardDialog.setDefaultButton(fGiris);
@@ -45,16 +44,16 @@ public final class GirisView {
 		    JPanel result = new JPanel();
 		    result.setLayout(new BoxLayout(result, BoxLayout.Y_AXIS));
 		    
-		    fMesaj = new JLabel("Lï¿½tfen giriï¿½ yapï¿½nï¿½z");
+		    fMesaj = new JLabel("Lütfen giriþ yapýnýz.");
 		    result.add(fMesaj);
 		    result.add(Box.createVerticalStrut(5));
 		    
-		    result.add(new JLabel("Kullanï¿½cï¿½ adï¿½"));
+		    result.add(new JLabel("Kullanýcý adý:"));
 		    fKulAdi = new JTextField();
 		    fKulAdi.setColumns(15);
 		    result.add(fKulAdi);
 		    
-		    result.add(new JLabel("ï¿½ifre"));
+		    result.add(new JLabel("Þifre:"));
 		    fSifre = new JPasswordField();
 		    result.add(fSifre);
 		    
@@ -64,12 +63,12 @@ public final class GirisView {
 
 		  private List<JButton> getButtons(){
 		    List<JButton> result = new ArrayList<>();
-		    fGiris = new JButton("Giriï¿½");
+		    fGiris = new JButton("Giriþ");
 		    fGiris.setActionCommand(GirisController.GIRIS);
 		    fGiris.addActionListener(fController);
 		    result.add(fGiris);
 		    
-		    JButton cancel = new JButton("Vazgeï¿½");
+		    JButton cancel = new JButton("Vazgeç");
 		    cancel.setActionCommand(GirisController.VAZGEC);
 		    cancel.addActionListener(fController);
 		    result.add(cancel);
@@ -77,24 +76,20 @@ public final class GirisView {
 		    return result;
 	  }	  
 	  
-	  /** Return the user name entered by the user. */
 	  String kulAdiAl(){
 	    return fKulAdi.getText();
 	  }
 	  
-	  /** Return the password entered by the user. */
 	  String sifreAl(){
 	    return fSifre.getPassword().toString();
 	  }	  
 
-	  /** Remove the login screen. */
 	  void kapat(){
 	    fStandardDialog.dispose();
 	  }	
 	  
-	  /** Allow the user to attempt to log in again. */
 	  void tekrarDene(){
-	    fMesaj.setText("Giriï¿½ baï¿½arï¿½sï¿½z! Tekrar deneyiniz.");
+	    fMesaj.setText("Giriþ baþarýsýz! Tekrar deneyiniz.");
 	  }	  	 
 
 }

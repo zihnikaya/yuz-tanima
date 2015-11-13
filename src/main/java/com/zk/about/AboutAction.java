@@ -1,6 +1,6 @@
 package com.zk.about;
 
-import zk.tez.UygulamaCalistir;
+import com.zk.App;
 
 import static com.zk.util.Consts.NEW_LINE;
 

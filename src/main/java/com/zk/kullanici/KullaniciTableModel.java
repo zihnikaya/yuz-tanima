@@ -75,7 +75,7 @@ public final class KullaniciTableModel extends AbstractTableModel {
     	result = kullanici.soyadAl();
     }
     else if(aCol == 3) {
-      result = kullanici.adAl();
+      result = kullanici.bolumAl();
     }
     return result;
   }
@@ -83,16 +83,16 @@ public final class KullaniciTableModel extends AbstractTableModel {
   @Override public String getColumnName(int aIdx){
     String result = "";
     if( aIdx == 0) {
-      result = "ï¿½ï¿½renci No";
+      result = "Öðrenci No";
     }
     else if( aIdx == 1) {
-      result = "Adï¿½";
+      result = "Adý";
     }
     else if( aIdx == 2) {
-      result = "Soyadï¿½";
+      result = "Soyadý";
     }
     else if( aIdx == 3) {
-      result =  "Aï¿½ï¿½klama";
+      result =  "Bölümü";
     }
     return result;
   }

@@ -58,7 +58,7 @@ public class App {
 	
 	public static Kullanici kullanici;
 	
-	public static final String APP_NAME = "Yï¿½z Tanï¿½ma";
+	public static final String APP_NAME = "Yüz Tanýma";
 	public static final String APP_VERSION = "1.0";	
 
 	public static void main(String[] args) {
@@ -119,7 +119,7 @@ public class App {
 		});
 		kaydetButton.setAlignmentX(Component.CENTER_ALIGNMENT);
 		
-		JButton vazgecButton = new JButton("Vazgeï¿½");
+		JButton vazgecButton = new JButton("Vazgeç");
 		vazgecButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent event) {
 				//kaydet();
@@ -161,7 +161,6 @@ public class App {
 			yuzTable.getSelectionModel().addListSelectionListener(new ListSelectionListener(){
 		        public void valueChanged(ListSelectionEvent event) {
 		            secilenGoruntuID = (int) (yuzTable.getValueAt(yuzTable.getSelectedRow(), 0));
-		        	// do some actions here, for example
 		            // print first column value from selected row
 		            //System.out.println(yuzTable.getValueAt(yuzTable.getSelectedRow(), 0).toString());
 		        }

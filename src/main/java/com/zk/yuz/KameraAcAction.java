@@ -10,7 +10,7 @@ import javax.swing.JTable;
 import com.zk.kullanici.Kullanici;
 import com.zk.kullanici.KullaniciTableModel;
 
-import zk.tez.UygulamaCalistir;
+import com.zk.App;
 
 public class KameraAcAction extends AbstractAction{
 	// PRIVATE 

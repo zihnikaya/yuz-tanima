@@ -8,11 +8,9 @@ import com.zk.util.Util;
 
 public final class GirisController implements ActionListener {
 
-	/** Action command string. */
-	static final String GIRIS = "Giriï¿½";
+	static final String GIRIS = "Yönetici Giriþi";
 	  
-	/** Action command string. */
-	static final String VAZGEC = "Vazgeï¿½";	
+	static final String VAZGEC = "Vazgeç";	
 	
 	private GirisView fView;
 	private int fNumAttempts = 0;
@@ -42,13 +40,6 @@ public final class GirisController implements ActionListener {
 		System.exit(0);
 	} 	
 	
-	  /**
-	   Validate the user name and password entered by the user.
-	   
-	   <P>If the validation succeeds, close the login screen and display the {@link MainWindow}.
-	   If the validation fails, allow the user to make a few more attempts at login.
-	   If the validation fails repeatedly, close the application.
-	  */
 	  void kulKimligiDogrula(){
 	    fNumAttempts++;
 	    String kulAdi = fView.kulAdiAl();

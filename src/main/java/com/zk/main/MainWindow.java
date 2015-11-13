@@ -1,7 +1,7 @@
 package com.zk.main;
 
-import zk.tez.UygulamaCalistir;
-import zk.tez.yuz_tanima.YuzTanimaAcAction;
+import com.zk.App;
+import com.zk.yuz_tanima.YuzTanimaAcAction;
 
 import java.awt.Color;
 import java.awt.Dimension;
@@ -31,8 +31,7 @@ import com.zk.kullanici.KullaniciTableModel;
 import com.zk.util.ui.UiUtil;
 import com.zk.yuz.KameraAcAction;
 
-public final class MainWindow {
-	
+public final class MainWindow {	
 	  private KullaniciTableModel fKullaniciTableModel;
 	  private JTable fKullaniciTable;
 	  private Action fChangeKullaniciAction;
@@ -64,7 +63,7 @@ public final class MainWindow {
   private void buildGui(){
     JFrame frame = new JFrame(
       App.APP_NAME + 
-      " - " + ("Kullanï¿½cï¿½lar")
+      " - " + ("Kullanýcýlar")
     ); 
     
     fKullaniciTableModel = new KullaniciTableModel();
@@ -74,7 +73,7 @@ public final class MainWindow {
     
     frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     placeInMiddlePartOfTheScreen(frame);
-    addApplicationIcon(frame);
+    //addApplicationIcon(frame);
     UiUtil.centerAndShow(frame);
   }
 
@@ -134,7 +133,7 @@ public final class MainWindow {
     fileMenu.add(new JMenuItem(exitAction));
     menuBar.add(fileMenu);
     
-    JMenu helpMenu = new JMenu("Yardï¿½m");
+    JMenu helpMenu = new JMenu("Yardým");
     helpMenu.setMnemonic('Y');
     helpMenu.add(new JMenuItem(new AboutAction(aFrame)));
     menuBar.add(helpMenu);
@@ -151,10 +150,10 @@ public final class MainWindow {
 
   private void addApplicationIcon(JFrame aFrame) {
     ImageIcon icon =  UiUtil.createImageIcon("app_icon.png", "Application icon", this.getClass());
+    System.out.println(icon);
     aFrame.setIconImage(icon.getImage());
   }
 
-  /** Build the main content of the frame. */
   private void buildContent(JFrame aFrame) {
 	  fKullaniciTable.setBackground(Color.LIGHT_GRAY);
     

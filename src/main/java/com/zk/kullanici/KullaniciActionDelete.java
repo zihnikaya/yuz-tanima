@@ -19,7 +19,7 @@ public class KullaniciActionDelete  extends AbstractAction {
   /** Constructor. */
   public KullaniciActionDelete(JTable aTable, KullaniciTableModel aKullaniciTableModel){
     super("Sil", null );
-    putValue(SHORT_DESCRIPTION, "Seï¿½ilen kullanï¿½cï¿½yï¿½ sil!"); 
+    putValue(SHORT_DESCRIPTION, "Seçilen kullanýcýyý sil!"); 
     putValue(MNEMONIC_KEY, new Integer(KeyEvent.VK_D) );
     fTable = aTable;
     fKullaniciTableModel = aKullaniciTableModel;

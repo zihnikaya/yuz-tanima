@@ -12,14 +12,16 @@ public final class Kullanici implements Comparable<Kullanici>{
   private final String fOgrNo;
   private final String fAd;
   private final String fSoyad;
+  private final String fBolum;
   private static final int EQUAL = 0;
   private static final int DESCENDING = -1;
 	
-  public Kullanici(String aId, String aOgrNo, String aAd, String aSoyad ) throws InvalidInputException {
+  public Kullanici(String aId, String aOgrNo, String aAd, String aSoyad, String aBolum ) throws InvalidInputException {
     fId = aId;
     fOgrNo = aOgrNo;
     fAd = aAd;
     fSoyad= aSoyad;
+    fBolum = aBolum;
     validateState();
   }
   
@@ -43,6 +45,9 @@ public final class Kullanici implements Comparable<Kullanici>{
 	  return fSoyad; 
   }
   
+  public String bolumAl(){ 
+	  return fBolum; 
+  }
  
   
   @Override public boolean equals(Object aThat){
@@ -52,7 +57,8 @@ public final class Kullanici implements Comparable<Kullanici>{
     return 
       areEqual(this.fOgrNo, that.fOgrNo) && 
       areEqual(this.fAd, that.fAd) && 
-      areEqual(this.fSoyad, that.fSoyad) 
+      areEqual(this.fSoyad, that.fSoyad)  &&
+      areEqual(this.fBolum, that.fBolum) 
     ; 
   }
   
@@ -61,20 +67,17 @@ public final class Kullanici implements Comparable<Kullanici>{
     result = addHash(result, fOgrNo);
     result = addHash(result, fAd);
     result = addHash(result, fSoyad);
+    result = addHash(result, fBolum);
     return result;
   }
   
   @Override public String toString(){
     return 
-      "Kullanici  Id:" + fId + " ï¿½ï¿½renci No:" + fOgrNo + " Adï¿½" + fAd + 
-      " Soyadï¿½:" + fSoyad 
+      "Kullanici  Id:" + fId + " Öðrenci No:" + fOgrNo + " Adý" + fAd + 
+      " Soyadý" + fSoyad + " Bölüm:"+fBolum
     ; 
   }
   
-  /** 
-   Default sort by Date Viewed, then Title. 
-   Dates have the most recent items listed first. 
- */
   @Override public int compareTo(Kullanici aThat) {
     if ( this == aThat ) return EQUAL;
    
@@ -85,6 +88,9 @@ public final class Kullanici implements Comparable<Kullanici>{
     if ( comparison != EQUAL ) return comparison;
     
     comparison = comparePossiblyNull(this.fSoyad, aThat.fSoyad);
+    if ( comparison != EQUAL ) return comparison;
+
+    comparison = comparePossiblyNull(this.fBolum, aThat.fBolum);
     if ( comparison != EQUAL ) return comparison;
    
     
@@ -105,12 +111,13 @@ public final class Kullanici implements Comparable<Kullanici>{
       comparison = comparePossiblyNull(aThis.fSoyad, aThat.fSoyad);
       if ( comparison != EQUAL ) return comparison;
      
+      comparison = comparePossiblyNull(aThis.fBolum, aThat.fBolum);
+      if ( comparison != EQUAL ) return comparison;
       
       return EQUAL;
     };
   };
   
-  /** Sort by Rating (descending), then Date Viewed (descending). */
   public static Comparator<Kullanici> RATING_SORT = new Comparator<Kullanici>(){
     @Override public int compare(Kullanici aThis, Kullanici aThat) {
       if ( aThis == aThat ) return EQUAL;
@@ -153,13 +160,13 @@ public final class Kullanici implements Comparable<Kullanici>{
     InvalidInputException ex = new InvalidInputException();
     
     if( ! Util.textAra(fOgrNo) ) {
-        ex.add("ï¿½ï¿½renci numarasï¿½ boï¿½ bï¿½rakï¿½lamaz");
+        ex.add("Öðrenci numarasý boþ býrakýlamaz");
       }
     if( ! Util.textAra(fAd) ) {
-        ex.add("Ad boï¿½ bï¿½rakï¿½lamaz");
+        ex.add("Ad boþ býrakýlamaz");
       }
     if( ! Util.textAra(fSoyad) ) {
-        ex.add("Soyad boï¿½ bï¿½rakï¿½lamaz");
+        ex.add("Soyad boþ býrakýlamaz");
       }
 
     if ( ex.hasErrors() ) {

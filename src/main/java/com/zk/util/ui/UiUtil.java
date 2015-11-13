@@ -1,6 +1,6 @@
 package com.zk.util.ui;
 
-import zk.tez.UygulamaCalistir;
+import com.zk.App;
 
 import java.util.*;
 import java.net.URL;
@@ -12,39 +12,13 @@ import com.zk.util.Args;
 
 import java.awt.*;
 
-/** 
- Static convenience methods for GUIs which eliminate code duplication.
- 
- <P>Your application will likely need to add to such a class. For example, 
- using <tt>GrdiBagLayout</tt> usually benefits from utility methods to 
- reduce code repetition.
-*/
 public final class UiUtil {
 
-  /**
-   <tt>pack</tt>, center, and <tt>show</tt> a window on the screen.
-  
-   <P>If the size of <tt>aWindow</tt> exceeds that of the screen, 
-   then the size of <tt>aWindow</tt> is reset to the size of the screen.
-  */
   public static void centerAndShow(Window aWindow){
-    //note that the order here is important
     
     aWindow.pack();
-    /*
-     * If called from outside the event dispatch thread (as is 
-     * the case upon startup, in the launch thread), then 
-     * in principle this code is not thread-safe: once pack has 
-     * been called, the component is realized, and (most) further
-     * work on the component should take place in the event-dispatch 
-     * thread. 
-     *
-     * In practice, it is exceedingly unlikely that this will lead 
-     * to an error, since invisible components cannot receive events.
-     */
     Dimension screen = Toolkit.getDefaultToolkit().getScreenSize();
     Dimension window = aWindow.getSize();
-    //ensure that no parts of aWindow will be off-screen
     if (window.height > screen.height) {
       window.height = screen.height;
     }
@@ -58,18 +32,6 @@ public final class UiUtil {
     aWindow.setVisible(true);
   }
   
-  /**
-   A window is packed, centered with respect to a parent, and then shown.
-  
-   <P>This method is intended for dialogs only.
-  
-   <P>If centering with respect to a parent causes any part of the dialog 
-   to be off screen, then the centering is overidden, such that all of the 
-   dialog will always appear fully on screen, but it will still appear 
-   near the parent.
-  
-   @param aWindow must have non-null result for <tt>aWindow.getParent</tt>.
-  */
   public static void centerOnParentAndShow(Window aWindow){
     aWindow.pack();
     
@@ -105,12 +67,6 @@ public final class UiUtil {
     aWindow.setVisible(true);
   }
 
-  /**
-   Return a border of dimensions recommended by the Java Look and Feel 
-   Design Guidelines, suitable for many common cases.
-  
-  <P>Each side of the border has size {@link UiConsts#STANDARD_BORDER}.
-  */
   public static Border getStandardBorder(){
     return BorderFactory.createEmptyBorder(
       UiConsts.STANDARD_BORDER, 
@@ -120,15 +76,6 @@ public final class UiUtil {
     );
   }
 
-  /**
-   Return text which conforms to the Look and Feel Design Guidelines 
-   for the title of a dialog : the application name, a colon, then 
-   the name of the specific dialog.
-  
-  <P>Example return value: <tt>My Movies: Login</tt>
-  
-   @param aSpecificDialogName must have visible content
-  */
   public static String getDialogTitle(String aSpecificDialogName){
     Args.checkForContent(aSpecificDialogName);
     StringBuilder result = new StringBuilder(App.APP_NAME);
@@ -137,17 +84,6 @@ public final class UiUtil {
     return result.toString(); 
   }
   
-  /**
-   Make a horizontal row of buttons of equal size, whch are equally spaced, 
-   and aligned on the right.
-  
-   <P>The returned component has border spacing only on the top (of the size 
-   recommended by the Look and Feel Design Guidelines).
-   All other spacing must be applied elsewhere ; usually, this will only mean 
-   that the dialog's top-level panel should use {@link #getStandardBorder}.
-   
-   @param aButtons contains the buttons to be placed in a row.
-  */
   public static JComponent getCommandRow(java.util.List<JComponent> aButtons){
     equalizeSizes( aButtons );
     JPanel panel = new JPanel();
@@ -164,18 +100,6 @@ public final class UiUtil {
     }
     return panel;
   }
-  
-  /**
-   Make a vertical row of buttons of equal size, whch are equally spaced, 
-   and aligned on the right.
-  
-   <P>The returned component has border spacing only on the left (of the size 
-   recommended by the Look and Feel Design Guidelines).
-   All other spacing must be applied elsewhere ; usually, this will only mean 
-   that the dialog's top-level panel should use {@link #getStandardBorder}.
-   
-   @param aButtons contains the buttons to be placed in a column
-  */
   public static JComponent getCommandColumn( java.util.List<JComponent> aButtons ){
     equalizeSizes( aButtons );
     JPanel panel = new JPanel();
@@ -210,16 +134,6 @@ public final class UiUtil {
     return result;
   }
   
-  /**
-   Return a <tt>Dimension</tt> whose size is defined not in terms of pixels, 
-   but in terms of a given percent of the screen's width and height. 
-  
-  <P> Use to set the preferred size of a component to a certain 
-   percentage of the screen.  
-  
-   @param aPercentWidth percentage width of the screen, in range <tt>1..100</tt>.
-   @param aPercentHeight percentage height of the screen, in range <tt>1..100</tt>.
-  */
   public static final Dimension getDimensionFromPercent(int aPercentWidth, int aPercentHeight){
     int low = 1;
     int high = 100;
@@ -229,17 +143,6 @@ public final class UiUtil {
     return calcDimensionFromPercent(screenSize, aPercentWidth, aPercentHeight);
   }
 
-  /**
-    Sets the items in <tt>aComponents</tt> to the same size.
-   
-    <P>Sets each component's preferred and maximum sizes. 
-    The actual size is determined by the layout manager, whcih adjusts 
-    for locale-specific strings and customized fonts. (See this 
-    <a href="http://java.sun.com/products/jlf/ed2/samcode/prefere.html">Sun doc</a> 
-    for more information.)
-   
-    @param aComponents items whose sizes are to be equalized
-   */
   public static void equalizeSizes(java.util.List<JComponent> aComponents) {
     Dimension targetSize = new Dimension(0,0);
     for(JComponent comp: aComponents ) {
@@ -251,26 +154,10 @@ public final class UiUtil {
     setSizes(aComponents, targetSize);
   }
 
-  /**
-   Make the system emit a beep.
-  
-   <P>May not beep unless the speakers are turned on, so this cannot 
-   be guaranteed to work.
-  */
   public static void beep(){
     Toolkit.getDefaultToolkit().beep();
   }
   
-  /**
-   Imposes a uniform horizontal alignment on all items in a container.
-  
-  <P> Intended especially for <tt>BoxLayout</tt>, where all components need 
-   to share the same alignment in order for display to be reasonable. 
-   (Indeed, this method may only work for <tt>BoxLayout</tt>, since apparently 
-   it is the only layout to use <tt>setAlignmentX, setAlignmentY</tt>.)
-  
-   @param aContainer contains only <tt>JComponent</tt> objects.
-  */
   public static void alignAllX(Container aContainer, UiUtil.AlignX aAlignment){
     java.util.List<Component> components = Arrays.asList( aContainer.getComponents() );
     for(Component comp: components){
@@ -293,16 +180,6 @@ public final class UiUtil {
     }
   }
   
-  /**
-   Imposes a uniform vertical alignment on all items in a container.
-  
-  <P> Intended especially for <tt>BoxLayout</tt>, where all components need 
-   to share the same alignment in order for display to be reasonable.
-   (Indeed, this method may only work for <tt>BoxLayout</tt>, since apparently 
-   it is the only layout to use <tt>setAlignmentX, setAlignmentY</tt>.)
-  
-   @param aContainer contains only <tt>JComponent</tt> objects.
-  */
   public static void alignAllY(Container aContainer, UiUtil.AlignY aAlignment){
     java.util.List components = Arrays.asList( aContainer.getComponents() );
     Iterator compsIter = components.iterator();
@@ -312,7 +189,6 @@ public final class UiUtil {
     }
   }
 
-  /** Type-safe enumeration vertical alignment. */
   public enum AlignY {
     TOP(Component.TOP_ALIGNMENT),
     CENTER(Component.CENTER_ALIGNMENT),
@@ -326,36 +202,18 @@ public final class UiUtil {
     }
   }
   
-  /**
-   Ensure that <tt>aRootPane</tt> has no default button associated with it.
-  
-   <P>Intended mainly for dialogs where the user is confirming a delete action.
-   In this case, an explicit Yes or No is preferred, with no default action being 
-   taken when the user hits the Enter key. 
-  */
   public static void noDefaultButton(JRootPane aRootPane){
     aRootPane.setDefaultButton(null);
   }
   
-  /**
-  Create an icon for use by a given class.
-  
-  Returns <tt>null</tt> if the icon cannot be found.
-  
-  @param aPath path to the file, relative to the calling class, as in '../images/blah.png'
-  @param aDescription description of the image
-  @param aClass class that needs to use the image
-  */
   public static ImageIcon createImageIcon(String aPath, String aDescription, Class aClass) {
     ImageIcon result = null;
-    URL imageURL = aClass.getResource(aPath); //resolves to an absolute path
+    URL imageURL = aClass.getResource(aPath); 
     if (imageURL != null) {
       result = new ImageIcon(imageURL, aDescription);
     } 
     return result;
   }
-
-  // PRIVATE
   
   private static void setSizes(java.util.List aComponents, Dimension aDimension){
     Iterator compsIter = aComponents.iterator();      

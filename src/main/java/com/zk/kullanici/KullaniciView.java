@@ -1,6 +1,5 @@
 package com.zk.kullanici;
 
-import java.util.logging.Logger;
 import java.util.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -23,19 +22,19 @@ final class KullaniciView {
   private JTextField fOgrNo = new JTextField();
   private JTextField fAd = new JTextField();
   private JTextField fSoyad = new JTextField();
-  private JTextField fAciklama = new JTextField();
+  private JTextField fBolum = new JTextField();
   private JButton fEditButton;
   
   KullaniciView(JFrame aParent) {
     fEdit = Edit.ADD;
-    buildGui(aParent, "Kullanï¿½cï¿½ Ekle");
+    buildGui(aParent, "Kullanýcý Ekle");
     fStandardDialog.display();
   }
 
   KullaniciView(JFrame aParent, Kullanici aSecilenKullanici) {
     fEdit = Edit.CHANGE;
     fId = aSecilenKullanici.idAl();
-    buildGui(aParent, "Kullanici Dï¿½zenle");
+    buildGui(aParent, "Kullanici Düzenle");
     populateFields(aSecilenKullanici);
     fStandardDialog.display();
   }
@@ -56,8 +55,8 @@ final class KullaniciView {
     return fSoyad.getText();
   }
 
-  String aciklamaAl() {
-    return fAciklama.getText();
+  String bolumAl() {
+    return fBolum.getText();
   }
 
   void closeDialog() {
@@ -73,6 +72,7 @@ final class KullaniciView {
     fOgrNo.setText(aSecilenKullanici.ogrNoAl());
     fAd.setText(aSecilenKullanici.adAl());
     fSoyad.setText(aSecilenKullanici.soyadAl());
+    fBolum.setText(aSecilenKullanici.bolumAl());
   }
 
   private void buildGui(JFrame aParent, String aDialogTitle) {
@@ -86,10 +86,10 @@ final class KullaniciView {
     JPanel result = new JPanel();
     result.setLayout(new BoxLayout(result, BoxLayout.Y_AXIS));
 
-    addTextField(fOgrNo, "ï¿½ï¿½renci No", result);
-    addTextField(fAd, "Adï¿½", result);
-    addTextField(fSoyad, "Soyadi", result);
-    addTextField(fAciklama, "Aï¿½ï¿½klama", result);
+    addTextField(fOgrNo, "Öðrenci No", result);
+    addTextField(fAd, "Adý", result);
+    addTextField(fSoyad, "Soyadý", result);
+    addTextField(fBolum, "Bölüm", result);
     UiUtil.alignAllX(result, UiUtil.AlignX.LEFT);
     return result;
   }
@@ -108,7 +108,7 @@ final class KullaniciView {
     fEditButton.addActionListener(new KullaniciController(this, fEdit));
     result.add(fEditButton);
 
-    JButton cancel = new JButton("Vazgeï¿½");
+    JButton cancel = new JButton("Vazgeç");
     cancel.addActionListener(new ActionListener() {
       @Override public void actionPerformed(ActionEvent arg0) {
         closeDialog();
