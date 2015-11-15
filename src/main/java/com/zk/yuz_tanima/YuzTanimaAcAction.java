@@ -11,16 +11,15 @@ import com.zk.App;
 import com.zk.kullanici.Kullanici;
 import com.zk.kullanici.KullaniciTableModel;
 
-public class YuzTanimaAcAction extends AbstractAction{
+public class YuzTanimaAcAction extends AbstractAction {
 	// PRIVATE 
 	private JFrame frame;
 	private JTable table;
 	private KullaniciTableModel kullaniciTableModel;
 	
-	/** Constructor. */
 	public YuzTanimaAcAction(JFrame frame, JTable table, KullaniciTableModel kullaniciTableModel ){
-		super("Yüz Tanýma", null );
-	    putValue(SHORT_DESCRIPTION, "Yüz tanýma"); 
+		super("YÃ¼z TanÄ±ma", null );
+	    putValue(SHORT_DESCRIPTION, "YÃ¼z TanÄ±ma"); 
 	    putValue(MNEMONIC_KEY, new Integer(KeyEvent.VK_T) );
 	    this.frame = frame;
 	    this.table = table;
@@ -28,7 +27,8 @@ public class YuzTanimaAcAction extends AbstractAction{
 	    setEnabled(false);
 	}
 	  
-	@Override public void actionPerformed(ActionEvent actionEvent) {
+	@Override 
+	public void actionPerformed(ActionEvent actionEvent) {
 		setEnabled(false);
 	    int row = table.getSelectedRow();
 	    Kullanici secilenKullanici = kullaniciTableModel.kullaniciAl(row);

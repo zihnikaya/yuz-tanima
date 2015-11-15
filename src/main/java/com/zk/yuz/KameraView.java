@@ -67,7 +67,7 @@ public class KameraView extends JFrame {
 	    kaydetButton.addActionListener(new KameraController(this));
 	    sonuc.add(kaydetButton);
 
-	    JButton vazgec = new JButton("Vazge�");
+	    JButton vazgec = new JButton("Vazgeç");
 	    vazgec.addActionListener(new ActionListener() {
 	    	@Override public void actionPerformed(ActionEvent arg0) {
 	    		kapat();

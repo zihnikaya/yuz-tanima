@@ -18,9 +18,6 @@ import com.zk.util.ui.StandardDialog;
 
 public class KameraMainView extends JFrame {
 	
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 1L;
 	private StandardDialog standardDialog;
 	private JButton kaydetButton;
@@ -71,7 +68,7 @@ public class KameraMainView extends JFrame {
 	    //kaydetButton.addActionListener(new KameraController(this));
 	    sonuc.add(kaydetButton);
 
-	    JButton vazgec = new JButton("Vazge�");
+	    JButton vazgec = new JButton("Vazgeç");
 	    vazgec.addActionListener(new ActionListener() {
 	    	@Override public void actionPerformed(ActionEvent arg0) {
 	    		kapat();

@@ -36,9 +36,9 @@ import org.opencv.objdetect.CascadeClassifier;
 import org.opencv.videoio.VideoCapture;
 import org.opencv.videoio.Videoio;
 
-import com.zk.giris.GirisController;
 import com.zk.kullanici.Kullanici;
 import com.zk.util.ImageProcessor;
+import com.zk.yonetici_giris.GirisController;
 import com.zk.yuz.Yuz;
 import com.zk.yuz.YuzDAO;
 import com.zk.yuz.YuzTableModel;
@@ -58,7 +58,7 @@ public class App {
 	
 	public static Kullanici kullanici;
 	
-	public static final String APP_NAME = "Y�z Tan�ma";
+	public static final String APP_NAME = "Yüz Tanıma";
 	public static final String APP_VERSION = "1.0";	
 
 	public static void main(String[] args) {
@@ -80,7 +80,7 @@ public class App {
             
 	public static void GUIYuzBulma() {
 		JFrame sahipsiz = null;
-		dialog = new JDialog(sahipsiz,"Y�z g�r�nt�s� ekle/g�ncenle", true);  
+		dialog = new JDialog(sahipsiz,"Yüz görüntüsü ekle / güncelle", true);  
 		dialog.setLayout(new GridBagLayout());
 		dialog.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);  
 		dialog.setSize(400,400);  
@@ -88,8 +88,7 @@ public class App {
 		setupImage();
 		setupButtons();
 		yuzGoruntuleriAyarla();
-		silOgretButtonlarAyarla();
-		//frame.setVisible(true);       
+		silOgretButtonlarAyarla();     
 	}
 
 	public static void GUIYuzTanima() {
@@ -119,7 +118,7 @@ public class App {
 		});
 		kaydetButton.setAlignmentX(Component.CENTER_ALIGNMENT);
 		
-		JButton vazgecButton = new JButton("Vazge�");
+		JButton vazgecButton = new JButton("Vazgeç");
 		vazgecButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent event) {
 				//kaydet();
@@ -161,7 +160,7 @@ public class App {
 			yuzTable.getSelectionModel().addListSelectionListener(new ListSelectionListener(){
 		        public void valueChanged(ListSelectionEvent event) {
 		            secilenGoruntuID = (int) (yuzTable.getValueAt(yuzTable.getSelectedRow(), 0));
-		            // print first column value from selected row
+		            //print first column value from selected row
 		            //System.out.println(yuzTable.getValueAt(yuzTable.getSelectedRow(), 0).toString());
 		        }
 		    });			
@@ -180,7 +179,7 @@ public class App {
 		});
 		silButton.setAlignmentX(Component.RIGHT_ALIGNMENT);		
 
-		JButton ogretButton = new JButton("Öğret");
+		JButton ogretButton = new JButton("Eğit");
 		ogretButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent event) {
 				//sil();
@@ -241,7 +240,7 @@ public class App {
 					tempImage= imageProcessor.toBufferedImage(webcamMatImage);					
 					ImageIcon imageIcon = new ImageIcon(tempImage, "Captured video");
 					imageView.setIcon(imageIcon);
-					dialog.pack();  //this will resize the window to fit the image
+					dialog.pack();  
 				}  
 				else{  
 					System.out.println(" -- Frame not captured -- Break!"); 
@@ -257,7 +256,6 @@ public class App {
 	private static void yuzBul(Mat image) {
 	    MatOfRect faceDetections = new MatOfRect();
 	    faceDetector.detectMultiScale(	image, faceDetections, 1.1, 7,0,new Size(250,40),new Size());
-	    // Draw a bounding box around each face.
 	    Rect rectCrop=null;
 	    		
 	    for (Rect rect : faceDetections.toArray()) {
@@ -267,12 +265,12 @@ public class App {
 	    if(rectCrop != null){
 	    	System.out.println("not null");
 	    	Mat image_roi = new Mat(image,rectCrop);
-	    	Imgcodecs.imwrite("yuz_goruntu.jpg",image_roi);
+	    	Imgcodecs.imwrite("src/main/resources/yuz_goruntu.jpg",image_roi);
 	    }
 	}
 	
 	private static void goruntuKaydet(){
-		File file = new File("yuz_goruntu.jpg");
+		File file = new File("src/main/resources/yuz_goruntu.jpg");
         byte[] ikiliDosya = new byte[(int) file.length()];
         
         try {

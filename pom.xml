@@ -5,6 +5,9 @@
   <version>0.0.1-SNAPSHOT</version>
   <packaging>jar</packaging>
   <name>Yuz tanima</name>
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    </properties>
   <repositories>
     <repository>
       <id>javaopencvbook</id>
@@ -25,8 +28,9 @@
         <artifactId>maven-compiler-plugin</artifactId>
         <version>3.1</version>
                 <configuration>
-                    <source>1.7</source>
-                    <target>1.7</target>
+                    <source>1.8</source>
+                    <target>1.8</target>
+		    <encoding>UTF-8</encoding>
                 </configuration>
         <executions>
           <execution>
@@ -97,9 +101,7 @@
       <plugin>
         <artifactId>maven-resources-plugin</artifactId>
         <version>2.6</version>
-        <configuration>
-          <encoding>UTF-8</encoding>
-        </configuration>        
+        
         <executions>
           <execution>
             <id>default-resources</id>
@@ -141,13 +143,14 @@
     	<artifactId>opencvjar</artifactId>
     	<version>3.0.0</version>    	     
     </dependency>
-    
 	<dependency>
-		<groupId>com.zk.opencv</groupId>
+    	<groupId>com.zk.opencv</groupId>
 		<artifactId>opencvjar-runtime</artifactId>
 		<version>3.0.0</version>
 		<classifier>natives-windows</classifier>
 	</dependency>
+    
+
   </dependencies>
   
 </project>

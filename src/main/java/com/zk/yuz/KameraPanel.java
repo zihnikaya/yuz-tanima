@@ -21,12 +21,7 @@ class KameraPanel extends JPanel{
      public KameraPanel(){  
           super();   
      }  
-     /**  
-      * Converts/writes a Mat into a BufferedImage.  
-      *   
-      * @param matrix Mat of type CV_8UC3 or CV_8UC1  
-      * @return BufferedImage of type TYPE_3BYTE_BGR or TYPE_BYTE_GRAY  
-      */  
+ 
      public boolean MatToBufferedImage(Mat matBGR){  
           long startTime = System.nanoTime();  
           int width = matBGR.width(), height = matBGR.height(), channels = matBGR.channels() ;  
@@ -39,7 +34,8 @@ class KameraPanel extends JPanel{
           long endTime = System.nanoTime();  
           System.out.println(String.format("Elapsed time: %.2f ms", (float)(endTime - startTime)/1000000));  
           return true;  
-     }  
+     }
+     
      public void paintComponent(Graphics g){  
          System.out.println("1"); 
     	 super.paintComponent(g);   

@@ -54,7 +54,7 @@ public class Kamera {
         panel.setSize(500, 500);
  
         // for drawing image to jpanel
-        KameraView KameraView = new KameraView();
+        KameraPanel KameraView = new KameraPanel();
  
         frame.setContentPane(KameraView);
         frame.setVisible(true);

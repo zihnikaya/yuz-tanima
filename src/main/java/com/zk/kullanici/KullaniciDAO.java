@@ -29,7 +29,7 @@ public final class KullaniciDAO {
 
    //  Database credentials
    static final String USER = "root";
-   static final String PASS = "";
+   static final String PASS = "kaya";
 
    Connection conn = null;
    Statement stmt = null;   

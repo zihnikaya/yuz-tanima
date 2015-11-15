@@ -20,8 +20,8 @@ public class KameraAcAction extends AbstractAction{
 	
 	/** Constructor. */
 	public KameraAcAction(JFrame frame, JTable table, KullaniciTableModel kullaniciTableModel ){
-		super("Y�z ekle/g�ncelle", null );
-	    putValue(SHORT_DESCRIPTION, "Y�z ekle/g�ncelle"); 
+		super("Yüz Görüntüsü ekle / güncelle", null );
+	    putValue(SHORT_DESCRIPTION, "Yüz Görüntüsü ekle / güncelle"); 
 	    putValue(MNEMONIC_KEY, new Integer(KeyEvent.VK_Z) );
 	    this.frame = frame;
 	    this.table = table;
@@ -34,9 +34,6 @@ public class KameraAcAction extends AbstractAction{
 	    int row = table.getSelectedRow();
 	    Kullanici secilenKullanici = kullaniciTableModel.kullaniciAl(row);
 	    App.kullanici = secilenKullanici;
-	    //UygulamaCalistir.GUIYuzBulma();
-	    //UygulamaCalistir.loadCascade();
-	    //UygulamaCalistir.kameraAc();
 
 	    App.yuzGoruntuleriAyarla();
 	    App.dialog.setVisible(true);
