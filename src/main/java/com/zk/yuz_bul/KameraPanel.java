@@ -42,4 +42,5 @@ class KameraPanel extends JPanel{
           	g.drawImage(this.image,10,10,this.image.getWidth(),this.image.getHeight(), null);  
   
      }  
+     
 } 
