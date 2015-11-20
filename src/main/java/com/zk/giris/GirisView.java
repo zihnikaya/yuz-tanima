@@ -1,4 +1,4 @@
-package giris;
+package com.zk.giris;
 
 
 import java.util.ArrayList;

@@ -1,57 +1,59 @@
-package kamera;
+package com.zk.giris;
 
-import java.awt.Dimension;
+import java.applet.Applet;
 import java.awt.Graphics;
-import java.awt.Panel;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
 import java.awt.image.DataBufferByte;
+import java.io.File;
+import java.io.IOException;
 
-import javax.swing.BoxLayout;
-import javax.swing.JButton;
-import javax.swing.JFrame;
-import javax.swing.JPanel;
+import javax.imageio.ImageIO;
 
 import org.opencv.core.Core;
 import org.opencv.core.Mat;
 import org.opencv.videoio.VideoCapture;
 
-import com.zk.kullanici.Kullanici;
-import com.zk.util.ui.StandardDialog;
-
 import com.zk.util.Processor;
 
-public class KameraPanel extends Panel {
+public class Giris extends Applet {
 	
-	private StandardDialog standardDialog;
-    private BufferedImage image; 
+	private BufferedImage image; 	
 	
-	public void ac(JFrame parent){
-		System.loadLibrary(Core.NATIVE_LIBRARY_NAME);
+    public void init() {
+		System.loadLibrary(Core.NATIVE_LIBRARY_NAME);	                	
+    }
+    
+    public void start() {
+ 	   File img = new File("lena.jpg");
+ 	   try {
+ 		   this.image = ImageIO.read(img);
+ 	   } catch (IOException e) {
+ 		   e.printStackTrace();
+ 	   }    	
+		//repaint();
 		
-		KameraPanel kameraPanel = new KameraPanel();
-		kameraPanel.setPreferredSize(new Dimension(600, 400));
-		
-		Processor processor=new Processor(); 
-		
+    	Processor processor=new Processor(); 
 	    Mat webcam_image=new Mat();  
 	    VideoCapture capture =new VideoCapture(0); 
-	    if( capture.isOpened())  {  
+	    if( capture.isOpened() )  {  
 	    	while( true ){  
 	    		capture.read(webcam_image);  
 	    		if( !webcam_image.empty() ) {   
 	    			webcam_image=processor.detect(webcam_image);  
-	    			kameraPanel.MatToBufferedImage(webcam_image);  
-	    			kameraPanel.repaint(); 
+	    			MatToBufferedImage(webcam_image);  	    		
 	    		}else{   
 	    			System.out.println(" --(!) No captured frame -- Break!");   
 	    			break;   
 	    		}  
 	    	}  
-        }  	            
-	}	
-	
+        }                                	
+    }   
+    
+    @Override
+    public void update(Graphics g) {
+    	paint(g);
+    }    
+    
     public boolean MatToBufferedImage(Mat matBGR){  
         long startTime = System.nanoTime();  
         int width = matBGR.width(), height = matBGR.height(), channels = matBGR.channels() ;  
@@ -62,13 +64,18 @@ public class KameraPanel extends Panel {
         final byte[] targetPixels = ((DataBufferByte) image.getRaster().getDataBuffer()).getData();  
         System.arraycopy(sourcePixels, 0, targetPixels, 0, sourcePixels.length);  
         long endTime = System.nanoTime();  
+        //repaint(); 
         System.out.println(String.format("Elapsed time: %.2f ms", (float)(endTime - startTime)/1000000));  
         return true;  
    }
+      
    
-   public void paintComponent(Graphics g){  
-       System.out.println("1"); 
-        if (this.image==null) return;  
-         g.drawImage(this.image,10,10,this.image.getWidth(),this.image.getHeight(), null);  
-   }	
+   public void paint(Graphics g) {
+	   g.drawString("zihni", 10, 20);
+
+	   g.drawImage(this.image,10,10,this.image.getWidth(),this.image.getHeight(), null); 
+       if (this.image==null) return;  
+       //g.drawImage(this.image,10,10,this.image.getWidth(),this.image.getHeight(), null);  
+   }   
+
 }

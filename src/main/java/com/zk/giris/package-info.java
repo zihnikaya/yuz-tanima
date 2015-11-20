@@ -5,4 +5,4 @@
  * @author kaya
  *
  */
-package kamera;
+package com.zk.giris;

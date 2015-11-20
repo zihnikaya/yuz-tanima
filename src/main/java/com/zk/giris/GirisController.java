@@ -1,4 +1,4 @@
-package giris;
+package com.zk.giris;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
