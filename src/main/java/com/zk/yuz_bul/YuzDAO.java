@@ -1,4 +1,4 @@
-package com.zk.yuz;
+package com.zk.yuz_bul;
 
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
@@ -12,12 +12,9 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.Locale;
 import java.util.Map;
-import java.util.logging.Logger;
 
 import com.zk.kullanici.Kullanici;
-import com.zk.main.MainWindow;
 import com.zk.util.Util;
 
 public final class YuzDAO {
@@ -26,39 +23,37 @@ public final class YuzDAO {
    static final String DB_URL = "jdbc:mysql://localhost/yuz_tanima";
 
    static final String USER = "root";
-   static final String PASS = "kaya";
+   static final String PASS = "";
 
    Connection conn = null;
    Statement stmt = null;   
 	   
    private static final Map<String, Yuz> table = new LinkedHashMap<>();
-   private static int fNextId = 0;
    private static final String NULL = "NULL";
    private final static Charset ENCODING = StandardCharsets.UTF_8;	
    
    private Kullanici kullanici;
   
    public YuzDAO(Kullanici kullanici){
-	    this.kullanici=kullanici;
+	    this.kullanici = kullanici;
+	    bul();
    }  
 
   List<Yuz> list() {    
-    System.out.println(this.kullanici);
-	bul();
-	List<Yuz> result = new ArrayList<>(table.values());
-    return result;
+	  System.out.println(table.values());
+	  bul();
+	  List<Yuz> result = new ArrayList<>(table.values());
+	  System.out.println("Array list:"+result);
+	  Collections.sort(result);
+	  System.out.println("Yüz:"+result);
+	  return result;
   }  
   
   public void ekle(Yuz yuz) {
 	   try{
-	      //STEP 2: Register JDBC driver
 	      Class.forName("com.mysql.jdbc.Driver");
 
-	      //STEP 3: Open a connection
-	      conn = DriverManager.getConnection(DB_URL, USER, PASS);
-	      
-	      //STEP 4: Execute a query
-	      //stmt = conn.createStatement();
+	      conn = DriverManager.getConnection(DB_URL, USER, PASS);	      
 	      
 	      PreparedStatement pstmt = conn.prepareStatement("INSERT INTO yuz (kullanici_id, goruntu) VALUES (?, ?)", PreparedStatement.RETURN_GENERATED_KEYS);
 	      pstmt.setString(1, this.kullanici.idAl());
@@ -136,6 +131,7 @@ public final class YuzDAO {
 	      stmt = conn.createStatement();
 	      String sql;
 	      sql = "SELECT id, kullanici_id, goruntu FROM yuz WHERE kullanici_id='"+this.kullanici.idAl()+"' ORDER BY id DESC";
+	      System.out.println(sql);
 	      ResultSet rs = stmt.executeQuery(sql);
 	      //STEP 5: Extract data from result set
 	      while(rs.next()){

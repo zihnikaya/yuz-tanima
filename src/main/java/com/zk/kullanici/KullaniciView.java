@@ -27,14 +27,14 @@ final class KullaniciView {
   
   KullaniciView(JFrame aParent) {
     fEdit = Edit.ADD;
-    buildGui(aParent, "Kullanýcý Ekle");
+    buildGui(aParent, "KullanÄ±cÄ± Ekle");
     fStandardDialog.display();
   }
 
   KullaniciView(JFrame aParent, Kullanici aSecilenKullanici) {
     fEdit = Edit.CHANGE;
     fId = aSecilenKullanici.idAl();
-    buildGui(aParent, "Kullanici Düzenle");
+    buildGui(aParent, "Kullanici DÃ¼zenle");
     populateFields(aSecilenKullanici);
     fStandardDialog.display();
   }
@@ -86,10 +86,10 @@ final class KullaniciView {
     JPanel result = new JPanel();
     result.setLayout(new BoxLayout(result, BoxLayout.Y_AXIS));
 
-    addTextField(fOgrNo, "Öðrenci No", result);
-    addTextField(fAd, "Adý", result);
-    addTextField(fSoyad, "Soyadý", result);
-    addTextField(fBolum, "Bölüm", result);
+    addTextField(fOgrNo, "Ã–ÄŸrenci No", result);
+    addTextField(fAd, "AdÄ±", result);
+    addTextField(fSoyad, "SoyadÄ±", result);
+    addTextField(fBolum, "BÃ¶lÃ¼m", result);
     UiUtil.alignAllX(result, UiUtil.AlignX.LEFT);
     return result;
   }
@@ -108,7 +108,7 @@ final class KullaniciView {
     fEditButton.addActionListener(new KullaniciController(this, fEdit));
     result.add(fEditButton);
 
-    JButton cancel = new JButton("Vazgeç");
+    JButton cancel = new JButton("VazgeÃ§");
     cancel.addActionListener(new ActionListener() {
       @Override public void actionPerformed(ActionEvent arg0) {
         closeDialog();

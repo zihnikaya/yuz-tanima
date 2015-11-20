@@ -3,7 +3,7 @@ package com.zk.yuz_tanima;
 import com.zk.kullanici.Kullanici;
 import com.zk.main.MainWindow;
 import com.zk.util.Util;
-import com.zk.yuz.Yuz;
+import com.zk.yuz_bul.Yuz;
 
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;

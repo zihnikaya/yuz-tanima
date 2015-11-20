@@ -19,7 +19,7 @@ public class Processor {
     private CascadeClassifier face_cascade;  
     // Create a constructor method  
     public Processor(){  
-         face_cascade=new CascadeClassifier("C:\\opencv\\sources\\data\\haarcascades\\haarcascade_frontalface_alt.xml");  
+         face_cascade=new CascadeClassifier("src/main/resources/cascades/haarcascade_frontalface_alt.xml");  
          if(face_cascade.empty())  
          {  
               System.out.println("--(!)Error loading A\n");  
@@ -39,7 +39,7 @@ public class Processor {
          Imgproc.cvtColor( mRgba, mGrey, Imgproc.COLOR_BGR2GRAY);  
          Imgproc.equalizeHist( mGrey, mGrey );  
          face_cascade.detectMultiScale(mGrey, faces);  
-         System.out.println(String.format("Detected %s faces", faces.toArray().length));  
+         //System.out.println(String.format("Detected %s faces", faces.toArray().length));  
          for(Rect rect:faces.toArray())  
          {  
               Point center= new Point(rect.x + rect.width*0.5, rect.y + rect.height*0.5 );  

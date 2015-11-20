@@ -16,12 +16,11 @@ public final class KullaniciActionChange extends AbstractAction  {
   private JFrame fFrame;
   private JTable fTable;
   private KullaniciTableModel fKullaniciTableModel;
-  private static final Logger fLogger = Util.getLogger(KullaniciActionEkle.class);	
   
   /** Constructor. */
   public KullaniciActionChange(JFrame aFrame, JTable aTable, KullaniciTableModel aKullaniciTableModel){
-    super("Düzenle...", null );
-    putValue(SHORT_DESCRIPTION, "Kullanýcý düzenle"); 
+    super("DÃ¼zenle...", null );
+    putValue(SHORT_DESCRIPTION, "KullanÄ±cÄ± dÃ¼zenle"); 
     putValue(MNEMONIC_KEY, new Integer(KeyEvent.VK_E) );
     fFrame = aFrame;
     fTable = aTable;

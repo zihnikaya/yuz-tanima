@@ -1,4 +1,4 @@
-package com.zk.yuz;
+package com.zk.yuz_bul;
 
 import java.awt.*;  
 import java.awt.image.BufferedImage;  
@@ -37,10 +37,9 @@ class KameraPanel extends JPanel{
      }
      
      public void paintComponent(Graphics g){  
-         System.out.println("1"); 
-    	 super.paintComponent(g);   
+    	  super.paintComponent(g);   
           if (this.image==null) return;  
-           g.drawImage(this.image,10,10,this.image.getWidth(),this.image.getHeight(), null);  
-          //g.drawString("This is my custom Panel!",10,20);  
+          	g.drawImage(this.image,10,10,this.image.getWidth(),this.image.getHeight(), null);  
+  
      }  
 } 

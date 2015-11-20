@@ -29,14 +29,14 @@ import com.zk.kullanici.KullaniciActionDelete;
 import com.zk.kullanici.KullaniciActionEkle;
 import com.zk.kullanici.KullaniciTableModel;
 import com.zk.util.ui.UiUtil;
-import com.zk.yuz.KameraAcAction;
+import com.zk.yuz_bul.YuzBulAcAction;
 
 public final class MainWindow {	
 	  private KullaniciTableModel fKullaniciTableModel;
 	  private JTable fKullaniciTable;
 	  private Action fChangeKullaniciAction;
 	  private Action fDeleteKullaniciAction;
-	  private Action kameraActionAc;
+	  private Action yuzBulActionAc;
 	  private Action yuzTanimaAcAction;
 	  private String fUserName;
 	  private static MainWindow INSTANCE = new MainWindow();	  
@@ -63,7 +63,7 @@ public final class MainWindow {
   private void buildGui(){
     JFrame frame = new JFrame(
       App.APP_NAME + 
-      " - " + ("Kullanýcýlar")
+      " - " + ("KullanÄ±cÄ±lar")
     ); 
     
     fKullaniciTableModel = new KullaniciTableModel();
@@ -98,14 +98,14 @@ public final class MainWindow {
       if( aEvent.getFirstIndex() != -1) {
         fDeleteKullaniciAction.setEnabled(true);
         fChangeKullaniciAction.setEnabled(true);
-        kameraActionAc.setEnabled(true);
+        yuzBulActionAc.setEnabled(true);
         yuzTanimaAcAction.setEnabled(true);
         
       }
       else {
         fDeleteKullaniciAction.setEnabled(false);
         fChangeKullaniciAction.setEnabled(false);
-        kameraActionAc.setEnabled(false);
+        yuzBulActionAc.setEnabled(false);
         yuzTanimaAcAction.setEnabled(false);
       }
     }
@@ -121,8 +121,8 @@ public final class MainWindow {
     fChangeKullaniciAction = new KullaniciActionChange(aFrame, fKullaniciTable, fKullaniciTableModel);
     fileMenu.add(new JMenuItem(fChangeKullaniciAction));    
     
-    kameraActionAc = new KameraAcAction(aFrame, fKullaniciTable, fKullaniciTableModel);
-    fileMenu.add(new JMenuItem(kameraActionAc));
+    yuzBulActionAc = new YuzBulAcAction(aFrame, fKullaniciTable, fKullaniciTableModel);
+    fileMenu.add(new JMenuItem(yuzBulActionAc));
     
     yuzTanimaAcAction = new YuzTanimaAcAction(aFrame, fKullaniciTable, fKullaniciTableModel);
     fileMenu.add(new JMenuItem(yuzTanimaAcAction));
@@ -133,7 +133,7 @@ public final class MainWindow {
     fileMenu.add(new JMenuItem(exitAction));
     menuBar.add(fileMenu);
     
-    JMenu helpMenu = new JMenu("Yardým");
+    JMenu helpMenu = new JMenu("YardÄ±m");
     helpMenu.setMnemonic('Y');
     helpMenu.add(new JMenuItem(new AboutAction(aFrame)));
     menuBar.add(helpMenu);

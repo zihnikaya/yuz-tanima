@@ -29,7 +29,7 @@ public final class KullaniciDAO {
 
    //  Database credentials
    static final String USER = "root";
-   static final String PASS = "kaya";
+   static final String PASS = "";
 
    Connection conn = null;
    Statement stmt = null;   
@@ -47,6 +47,7 @@ public final class KullaniciDAO {
 	bul();
 	List<Kullanici> result = new ArrayList<>(fTable.values());
     Collections.sort(result);
+    System.out.println("kullanıcı:"+result);
     return result;
   }  
   
@@ -57,9 +58,6 @@ public final class KullaniciDAO {
 
 	      //STEP 3: Open a connection
 	      conn = DriverManager.getConnection(DB_URL, USER, PASS);
-	      
-	      //STEP 4: Execute a query
-	      //stmt = conn.createStatement();
 	      
 	      PreparedStatement pstmt = conn.prepareStatement("INSERT INTO kullanici (ogrenci_no, ad, soyad,bolum) VALUES (?, ?, ?, ?)", PreparedStatement.RETURN_GENERATED_KEYS);
 	      pstmt.setString(1, aKullanici.ogrNoAl());

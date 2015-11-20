@@ -21,8 +21,10 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
+import javax.swing.JTextField;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
+import javax.swing.text.JTextComponent;
 
 import org.opencv.core.Mat;
 import org.opencv.core.MatOfRect;
@@ -39,9 +41,10 @@ import org.opencv.videoio.Videoio;
 import com.zk.kullanici.Kullanici;
 import com.zk.util.ImageProcessor;
 import com.zk.yonetici_giris.GirisController;
-import com.zk.yuz.Yuz;
-import com.zk.yuz.YuzDAO;
-import com.zk.yuz.YuzTableModel;
+import com.zk.yuz_bul.Yuz;
+import com.zk.yuz_bul.YuzDAO;
+import com.zk.yuz_bul.YuzTableModel;
+
 import org.opencv.core.*;
 public class App {
 	static{ System.loadLibrary(Core.NATIVE_LIBRARY_NAME); 
@@ -52,7 +55,11 @@ public class App {
 	private static CascadeClassifier faceDetector;
 	public static YuzTableModel yuzTableModel;
 	public static JTable yuzTable;
-	public static int secilenGoruntuID;
+	public static int secilenGoruntuId;
+	public static JPanel adKaydetPanel = new JPanel();
+	public static JLabel tamAdi = new JLabel();
+	public static JButton kaydetButton = new JButton("Kaydet");
+	public static JScrollPane yuzScrollPane;
 
 	public static YuzDAO yuzDAO;
 	
@@ -80,69 +87,79 @@ public class App {
             
 	public static void GUIYuzBulma() {
 		JFrame sahipsiz = null;
-		dialog = new JDialog(sahipsiz,"Yüz görüntüsü ekle / güncelle", true);  
+		dialog = new JDialog(sahipsiz,"Yüz Bul", true);  
 		dialog.setLayout(new GridBagLayout());
-		dialog.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);  
+		dialog.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);  		
+		
 		dialog.setSize(400,400);  
 		
 		setupImage();
-		setupButtons();
-		yuzGoruntuleriAyarla();
-		silOgretButtonlarAyarla();     
+		//setupButtons();
+		//yuzGoruntuleriAyarla();
+		silEgitButtonlarAyarla();     
 	}
 
 	public static void GUIYuzTanima() {
 		JFrame sahipsiz = null;
 		dialog = new JDialog(sahipsiz,"Yüz Tanıma", true);  
 		dialog.setLayout(new GridBagLayout());
-		dialog.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);  
+		dialog.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);  
 		dialog.setSize(400,400);  
 		setupImage();
 	}
 	
-	
 	private static void setupImage() {
 		GridBagConstraints c = new GridBagConstraints();
-		c.fill = GridBagConstraints.CENTER;
+		c.fill = GridBagConstraints.WEST;
 		c.gridx = 0;
 		c.gridy = 0;
 		dialog.add(imageView,c);
 	}
 	
-	private static void setupButtons() {
-		JButton kaydetButton = new JButton("Kaydet");
+	public static void setupButtons() {
+		GridBagLayout gridBagRowLayout = new GridBagLayout();
+		GridBagConstraints gbc = new GridBagConstraints();
+		gbc.fill=GridBagConstraints.EAST;
+		gbc.gridx = 0;
+		gbc.gridy = 0;
+		gbc.ipadx=0;
+		
+		try{
+			tamAdi.setText(kullanici.adAl()+' '+kullanici.soyadAl());
+		}catch(NullPointerException ex){
+			System.out.println(ex.getMessage());
+		}
+		
+		tamAdi.setAlignmentX(Component.LEFT_ALIGNMENT);
+		adKaydetPanel.add(tamAdi, gbc);		
+		
 		kaydetButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent event) {
 				goruntuKaydet();
 			}
 		});
-		kaydetButton.setAlignmentX(Component.CENTER_ALIGNMENT);
 		
-		JButton vazgecButton = new JButton("Vazgeç");
-		vazgecButton.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent event) {
-				//kaydet();
-			}
-		});
-		vazgecButton.setAlignmentX(Component.CENTER_ALIGNMENT);				
-		
-		GridLayout gridRowLayout = new GridLayout(1,0);
-		JPanel buttonsPanel = new JPanel(gridRowLayout);
-
-		buttonsPanel.add(kaydetButton);
-		buttonsPanel.add(vazgecButton);	
-		
+		gbc.ipadx=0;
+		gbc.gridx = 1;
+		gbc.gridy = 0;
+		gbc.fill = GridBagConstraints.BOTH;
+        gbc.anchor = GridBagConstraints.NORTHWEST;
+        //gbc.weightx = 100;
+        //gbc.weighty = 20;	
+        //gbc.ipadx=50;
+		adKaydetPanel.add(kaydetButton, gbc);		
 		GridBagConstraints c = new GridBagConstraints();
-
 		c.gridx = 0;
 		c.gridy = 1;
-		dialog.add(buttonsPanel,c);		
+		dialog.add(adKaydetPanel,c);	
 	}	
 	
 	public static void yuzGoruntuleriAyarla() {			
 		try{
-			yuzDAO = new YuzDAO(kullanici);
+			System.out.println(kullanici);
+			//yuzDAO = new YuzDAO(kullanici);
 			yuzTableModel = new YuzTableModel(kullanici);
+			System.out.println("Ad:" + yuzTableModel.getColumnName(2));
 			yuzTable = new JTable(yuzTableModel);
 			yuzTable.setBackground(Color.LIGHT_GRAY);
 			yuzTable.getColumnModel().getColumn(0).setPreferredWidth(20);
@@ -150,16 +167,17 @@ public class App {
 			yuzTable.setRowHeight(279);
 			yuzTable.setFillsViewportHeight(true);
 			yuzTable.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
-			JScrollPane scrollPane = new JScrollPane(yuzTable);
-			scrollPane.setPreferredSize(new Dimension(330, 480));
+			yuzScrollPane = new JScrollPane(yuzTable);
+			yuzScrollPane.setPreferredSize(new Dimension(330, 480));
 			GridBagConstraints c = new GridBagConstraints();
 			c.gridx = 1;
 			c.gridy = 0;
-			dialog.add(scrollPane,c);	
+			dialog.add(yuzScrollPane,c);	
 			
 			yuzTable.getSelectionModel().addListSelectionListener(new ListSelectionListener(){
 		        public void valueChanged(ListSelectionEvent event) {
-		            secilenGoruntuID = (int) (yuzTable.getValueAt(yuzTable.getSelectedRow(), 0));
+		            secilenGoruntuId = (int) (yuzTable.getValueAt(yuzTable.getSelectedRow(), 0));
+		            System.out.println(secilenGoruntuId);
 		            //print first column value from selected row
 		            //System.out.println(yuzTable.getValueAt(yuzTable.getSelectedRow(), 0).toString());
 		        }
@@ -170,7 +188,7 @@ public class App {
 		}
 	}		
 
-	public static void silOgretButtonlarAyarla() {			
+	public static void silEgitButtonlarAyarla() {			
 		JButton silButton = new JButton("Sil");
 		silButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent event) {
@@ -186,7 +204,6 @@ public class App {
 			}
 		});
 		ogretButton.setAlignmentX(Component.RIGHT_ALIGNMENT);		
-		
 		
 		GridLayout gridRowLayout = new GridLayout(1,0);
 		gridRowLayout.setVgap(5);
@@ -243,7 +260,7 @@ public class App {
 					dialog.pack();  
 				}  
 				else{  
-					System.out.println(" -- Frame not captured -- Break!"); 
+					System.out.println("-- Frame not captured -- Break!"); 
 					break;  
 				}
 			}  
@@ -263,7 +280,7 @@ public class App {
 	        rectCrop = new Rect(rect.x, rect.y, rect.width, rect.height);
 	    }
 	    if(rectCrop != null){
-	    	System.out.println("not null");
+	    	//System.out.println("not null");
 	    	Mat image_roi = new Mat(image,rectCrop);
 	    	Imgcodecs.imwrite("src/main/resources/yuz_goruntu.jpg",image_roi);
 	    }
@@ -288,8 +305,8 @@ public class App {
 	}
         
 	private static void goruntuSil(){
-		yuzDAO.sil(secilenGoruntuID);
+		yuzDAO.sil(secilenGoruntuId);
         yuzTableModel.yenile();
-        yuzTableModel.fireTableRowsDeleted(secilenGoruntuID, secilenGoruntuID);
+        yuzTableModel.fireTableRowsDeleted(secilenGoruntuId, secilenGoruntuId);
 	}
 }

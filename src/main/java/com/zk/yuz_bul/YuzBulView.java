@@ -1,4 +1,4 @@
-package com.zk.yuz;
+package com.zk.yuz_bul;
 
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
@@ -14,31 +14,32 @@ import org.opencv.core.Mat;
 import org.opencv.videoio.VideoCapture;
 
 import com.zk.kullanici.Kullanici;
+import com.zk.util.Processor;
 import com.zk.util.ui.StandardDialog;
 
-public class KameraView extends JFrame {
+public class YuzBulView extends JFrame {
 	
+	private static final long serialVersionUID = 1L;
 	private StandardDialog standardDialog;
 	private JButton kaydetButton;
 	private Kullanici secilenKullanici;
 	
-	public void run(JFrame parent, Kullanici secilenKullanici){
+	public static void main(String[] args){
 		System.loadLibrary(Core.NATIVE_LIBRARY_NAME);
-		KameraView kv = new KameraView(); 
-		//this.secilenKullanici = secilenKullanici;
+		YuzBulView yuzBulView = new YuzBulView(); 
 		
-		kv.setSize(800,600);
-		kv.setLayout(new BoxLayout(kv.getContentPane(),BoxLayout.Y_AXIS));
+		yuzBulView.setSize(800,600);
+		yuzBulView.setLayout(new BoxLayout(yuzBulView.getContentPane(),BoxLayout.Y_AXIS));
 		
 		KameraPanel kameraPanel = new KameraPanel();
 		kameraPanel.setPreferredSize(new Dimension(600, 400));
-		kv.add(kameraPanel); 
+		yuzBulView.add(kameraPanel); 
 		
-		kv.add(kv.buttonlariAl());
+		yuzBulView.add(yuzBulView.buttonlariAl());
 		Processor processor=new Processor(); 
 		
-		kv.setDefaultCloseOperation(EXIT_ON_CLOSE);
-		kv.setVisible(true);
+		yuzBulView.setDefaultCloseOperation(EXIT_ON_CLOSE);
+		yuzBulView.setVisible(true);
 	    
 	    Mat webcam_image=new Mat();  
 	    VideoCapture capture =new VideoCapture(0); 
@@ -46,12 +47,9 @@ public class KameraView extends JFrame {
 	    	while( true ){  
 	    		capture.read(webcam_image);  
 	    		if( !webcam_image.empty() ) {   
-	    			//-- 3. Apply the classifier to the captured image  
 	    			webcam_image=processor.detect(webcam_image);  
-	    			//-- 4. Display the image  
-	    			kameraPanel.MatToBufferedImage(webcam_image); // We could look at the error...  
+	    			kameraPanel.MatToBufferedImage(webcam_image);  
 	    			kameraPanel.repaint(); 
-	    			//kameraPanel.paintImmediately(0,0,600,400);
 	    		}else{   
 	    			System.out.println(" --(!) No captured frame -- Break!");   
 	    			break;   
@@ -64,7 +62,7 @@ public class KameraView extends JFrame {
 	    JPanel sonuc = new JPanel();
 
 	    kaydetButton = new JButton("Kaydet");
-	    kaydetButton.addActionListener(new KameraController(this));
+	    //kaydetButton.addActionListener(new KameraController(this));
 	    sonuc.add(kaydetButton);
 
 	    JButton vazgec = new JButton("Vazgeç");
@@ -83,3 +81,4 @@ public class KameraView extends JFrame {
 	
 	
 }
+

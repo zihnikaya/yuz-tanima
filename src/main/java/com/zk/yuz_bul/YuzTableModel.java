@@ -1,4 +1,4 @@
-package com.zk.yuz;
+package com.zk.yuz_bul;
 
 import java.util.List;
 
@@ -16,12 +16,16 @@ public final class YuzTableModel extends AbstractTableModel {
 
   public YuzTableModel(Kullanici kullanici){
     this.kullanici= kullanici;
-	DAO = new YuzDAO(kullanici);
+	System.out.println(kullanici);
+    DAO = new YuzDAO(kullanici);
     yuzler = DAO.list();
+    System.out.println(yuzler.toString());
+    
   }
 
   public void yenile() {
 	yuzler = DAO.list();
+	fireTableDataChanged();
   }
   
   @Override public int getColumnCount() {
@@ -50,7 +54,7 @@ public final class YuzTableModel extends AbstractTableModel {
       result = "ID";
     }
     else if( aIdx == 1) {
-      result = this.kullanici.adAl()+" "+this.kullanici.soyadAl();
+      result ="Görüntü";
     }
     return result;
   }

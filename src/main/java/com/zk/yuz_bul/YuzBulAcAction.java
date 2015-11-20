@@ -1,4 +1,4 @@
-package com.zk.yuz;
+package com.zk.yuz_bul;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
@@ -12,16 +12,16 @@ import com.zk.kullanici.KullaniciTableModel;
 
 import com.zk.App;
 
-public class KameraAcAction extends AbstractAction{
+public class YuzBulAcAction extends AbstractAction{
 	// PRIVATE 
 	private JFrame frame;
 	private JTable table;
 	private KullaniciTableModel kullaniciTableModel;
 	
 	/** Constructor. */
-	public KameraAcAction(JFrame frame, JTable table, KullaniciTableModel kullaniciTableModel ){
-		super("Yüz Görüntüsü ekle / güncelle", null );
-	    putValue(SHORT_DESCRIPTION, "Yüz Görüntüsü ekle / güncelle"); 
+	public YuzBulAcAction(JFrame frame, JTable table, KullaniciTableModel kullaniciTableModel ){
+		super("Yüz Bul", null );
+	    putValue(SHORT_DESCRIPTION, "Yüz Bul"); 
 	    putValue(MNEMONIC_KEY, new Integer(KeyEvent.VK_Z) );
 	    this.frame = frame;
 	    this.table = table;
@@ -33,9 +33,15 @@ public class KameraAcAction extends AbstractAction{
 		setEnabled(false);
 	    int row = table.getSelectedRow();
 	    Kullanici secilenKullanici = kullaniciTableModel.kullaniciAl(row);
+	    System.out.println(secilenKullanici);
 	    App.kullanici = secilenKullanici;
+		App.setupButtons();
+		App.adKaydetPanel.repaint();
+		App.kaydetButton.repaint();
 
-	    App.yuzGoruntuleriAyarla();
+		App.yuzGoruntuleriAyarla();
+		System.out.println(App.yuzTable.getSelectionModel().toString());
+	    //App.yuzScrollPane.repaint();
 	    App.dialog.setVisible(true);
 	}
 	  

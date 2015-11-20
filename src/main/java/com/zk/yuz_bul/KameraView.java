@@ -1,4 +1,4 @@
-package com.zk.yuz;
+package com.zk.yuz_bul;
 
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
@@ -14,19 +14,20 @@ import org.opencv.core.Mat;
 import org.opencv.videoio.VideoCapture;
 
 import com.zk.kullanici.Kullanici;
+import com.zk.util.Processor;
 import com.zk.util.ui.StandardDialog;
 
-public class KameraMainView extends JFrame {
+public class KameraView extends JFrame {
 	
-	private static final long serialVersionUID = 1L;
 	private StandardDialog standardDialog;
 	private JButton kaydetButton;
 	private Kullanici secilenKullanici;
 	
-	public static void main(String[] args){
+	public void run(JFrame parent, Kullanici secilenKullanici){
 		System.loadLibrary(Core.NATIVE_LIBRARY_NAME);
-		KameraMainView kv = new KameraMainView(); 
+		KameraView kv = new KameraView(); 
 		//this.secilenKullanici = secilenKullanici;
+		System.out.println(secilenKullanici);
 		
 		kv.setSize(800,600);
 		kv.setLayout(new BoxLayout(kv.getContentPane(),BoxLayout.Y_AXIS));
@@ -65,7 +66,7 @@ public class KameraMainView extends JFrame {
 	    JPanel sonuc = new JPanel();
 
 	    kaydetButton = new JButton("Kaydet");
-	    //kaydetButton.addActionListener(new KameraController(this));
+	    kaydetButton.addActionListener(new YuzBulController(this));
 	    sonuc.add(kaydetButton);
 
 	    JButton vazgec = new JButton("Vazgeç");
@@ -84,4 +85,3 @@ public class KameraMainView extends JFrame {
 	
 	
 }
-

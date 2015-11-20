@@ -32,7 +32,6 @@ public final class KullaniciTableModel extends AbstractTableModel {
   public void sortByColumn(int aIdx){
     fNumClicks++;
     if( aIdx == 1 ) {
-      //natural sorting of the Kullanici class
       Collections.sort(fKullanicilar);
     }
     else {
@@ -83,16 +82,16 @@ public final class KullaniciTableModel extends AbstractTableModel {
   @Override public String getColumnName(int aIdx){
     String result = "";
     if( aIdx == 0) {
-      result = "Öðrenci No";
+      result = "Ã–ÄŸrenci No";
     }
     else if( aIdx == 1) {
-      result = "Adý";
+      result = "AdÄ±";
     }
     else if( aIdx == 2) {
-      result = "Soyadý";
+      result = "SoyadÄ±";
     }
     else if( aIdx == 3) {
-      result =  "Bölümü";
+      result =  "BÃ¶lÃ¼m";
     }
     return result;
   }

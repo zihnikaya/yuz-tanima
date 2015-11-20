@@ -33,7 +33,7 @@ public final class GirisView {
 	  void girisEkraniGoster(){
 	    JFrame NO_OWNER = null;
 	    fStandardDialog = new StandardDialog(
-	      NO_OWNER, "Giri�", 
+	      NO_OWNER, "Giriş", 
 	      true, OnClose.DISPOSE, getBody(), getButtons()
 	    );
 	    fStandardDialog.setDefaultButton(fGiris);
@@ -44,16 +44,16 @@ public final class GirisView {
 		    JPanel result = new JPanel();
 		    result.setLayout(new BoxLayout(result, BoxLayout.Y_AXIS));
 		    
-		    fMesaj = new JLabel("L�tfen giri� yap�n�z.");
+		    fMesaj = new JLabel("Lütfen giriş yaponız.");
 		    result.add(fMesaj);
 		    result.add(Box.createVerticalStrut(5));
 		    
-		    result.add(new JLabel("Kullan�c� ad�:"));
+		    result.add(new JLabel("Kullanıcı adı:"));
 		    fKulAdi = new JTextField();
 		    fKulAdi.setColumns(15);
 		    result.add(fKulAdi);
 		    
-		    result.add(new JLabel("�ifre:"));
+		    result.add(new JLabel("Şifre:"));
 		    fSifre = new JPasswordField();
 		    result.add(fSifre);
 		    
@@ -63,12 +63,12 @@ public final class GirisView {
 
 		  private List<JButton> getButtons(){
 		    List<JButton> result = new ArrayList<>();
-		    fGiris = new JButton("Giri�");
+		    fGiris = new JButton("Giriş");
 		    fGiris.setActionCommand(GirisController.GIRIS);
 		    fGiris.addActionListener(fController);
 		    result.add(fGiris);
 		    
-		    JButton cancel = new JButton("Vazge�");
+		    JButton cancel = new JButton("Vazgeç");
 		    cancel.setActionCommand(GirisController.VAZGEC);
 		    cancel.addActionListener(fController);
 		    result.add(cancel);
@@ -89,7 +89,7 @@ public final class GirisView {
 	  }	
 	  
 	  void tekrarDene(){
-	    fMesaj.setText("Giri� ba�ar�s�z! Tekrar deneyiniz.");
+	    fMesaj.setText("Giriş başarısız! Tekrar deneyiniz.");
 	  }	  	 
 
 }
