@@ -16,11 +16,10 @@ public final class YuzTableModel extends AbstractTableModel {
 
   public YuzTableModel(Kullanici kullanici){
     this.kullanici= kullanici;
-	System.out.println(kullanici);
+	//System.out.println(kullanici);
     DAO = new YuzDAO(kullanici);
     yuzler = DAO.list();
-    System.out.println(yuzler.toString());
-    
+    //System.out.println(yuzler.toString());    
   }
 
   public void yenile() {

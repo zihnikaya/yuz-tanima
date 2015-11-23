@@ -29,7 +29,7 @@ public final class KullaniciDAO {
 
    //  Database credentials
    static final String USER = "root";
-   static final String PASS = "";
+   static final String PASS = "kaya";
 
    Connection conn = null;
    Statement stmt = null;   
@@ -47,7 +47,6 @@ public final class KullaniciDAO {
 	bul();
 	List<Kullanici> result = new ArrayList<>(fTable.values());
     Collections.sort(result);
-    System.out.println("kullanıcı:"+result);
     return result;
   }  
   

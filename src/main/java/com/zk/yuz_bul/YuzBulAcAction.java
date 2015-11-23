@@ -33,15 +33,10 @@ public class YuzBulAcAction extends AbstractAction{
 		setEnabled(false);
 	    int row = table.getSelectedRow();
 	    Kullanici secilenKullanici = kullaniciTableModel.kullaniciAl(row);
-	    System.out.println(secilenKullanici);
 	    App.kullanici = secilenKullanici;
-		App.setupButtons();
-		App.adKaydetPanel.repaint();
-		App.kaydetButton.repaint();
-
-		App.yuzGoruntuleriAyarla();
-		System.out.println(App.yuzTable.getSelectionModel().toString());
-	    //App.yuzScrollPane.repaint();
+	    App.silEgitButtonGoster();  
+	    App.setupButtons();
+		App.kulYuzleriGoster();
 	    App.dialog.setVisible(true);
 	}
 	  

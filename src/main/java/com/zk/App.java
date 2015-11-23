@@ -38,9 +38,9 @@ import org.opencv.objdetect.CascadeClassifier;
 import org.opencv.videoio.VideoCapture;
 import org.opencv.videoio.Videoio;
 
+import com.zk.giris.GirisController;
 import com.zk.kullanici.Kullanici;
 import com.zk.util.ImageProcessor;
-import com.zk.yonetici_giris.GirisController;
 import com.zk.yuz_bul.Yuz;
 import com.zk.yuz_bul.YuzDAO;
 import com.zk.yuz_bul.YuzTableModel;
@@ -87,23 +87,21 @@ public class App {
             
 	public static void GUIYuzBulma() {
 		JFrame sahipsiz = null;
-		dialog = new JDialog(sahipsiz,"Yüz Bul", true);  
+		dialog = new JDialog(sahipsiz,"Yüz Bulma", true);  
 		dialog.setLayout(new GridBagLayout());
 		dialog.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);  		
 		
 		dialog.setSize(400,400);  
 		
 		setupImage();
-		//setupButtons();
-		//yuzGoruntuleriAyarla();
-		silEgitButtonlarAyarla();     
+		   
 	}
 
 	public static void GUIYuzTanima() {
 		JFrame sahipsiz = null;
 		dialog = new JDialog(sahipsiz,"Yüz Tanıma", true);  
 		dialog.setLayout(new GridBagLayout());
-		dialog.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);  
+		dialog.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);  
 		dialog.setSize(400,400);  
 		setupImage();
 	}
@@ -117,20 +115,22 @@ public class App {
 	}
 	
 	public static void setupButtons() {
-		GridBagLayout gridBagRowLayout = new GridBagLayout();
+		GridBagLayout gbl = new GridBagLayout();
+		adKaydetPanel.setLayout(gbl);
 		GridBagConstraints gbc = new GridBagConstraints();
-		gbc.fill=GridBagConstraints.EAST;
+		gbc.fill=GridBagConstraints.HORIZONTAL;
 		gbc.gridx = 0;
 		gbc.gridy = 0;
-		gbc.ipadx=0;
-		
+		//gbc.fill=GridBagConstraints.WEST;
+		gbc.ipadx=250;
 		try{
 			tamAdi.setText(kullanici.adAl()+' '+kullanici.soyadAl());
 		}catch(NullPointerException ex){
 			System.out.println(ex.getMessage());
 		}
-		
 		tamAdi.setAlignmentX(Component.LEFT_ALIGNMENT);
+		tamAdi.setOpaque(true);
+		gbl.setConstraints(tamAdi, gbc);
 		adKaydetPanel.add(tamAdi, gbc);		
 		
 		kaydetButton.addActionListener(new ActionListener() {
@@ -138,28 +138,28 @@ public class App {
 				goruntuKaydet();
 			}
 		});
-		
-		gbc.ipadx=0;
+				
 		gbc.gridx = 1;
 		gbc.gridy = 0;
-		gbc.fill = GridBagConstraints.BOTH;
-        gbc.anchor = GridBagConstraints.NORTHWEST;
         //gbc.weightx = 100;
         //gbc.weighty = 20;	
-        //gbc.ipadx=50;
+		gbc.ipadx=0;
+		gbl.setConstraints(kaydetButton, gbc);
 		adKaydetPanel.add(kaydetButton, gbc);		
+		
 		GridBagConstraints c = new GridBagConstraints();
 		c.gridx = 0;
 		c.gridy = 1;
+		//c.fill = GridBagConstraints.HORIZONTAL;
+		c.anchor = GridBagConstraints.WEST;
 		dialog.add(adKaydetPanel,c);	
 	}	
 	
-	public static void yuzGoruntuleriAyarla() {			
+	public static void kulYuzleriGoster() {			
 		try{
-			System.out.println(kullanici);
-			//yuzDAO = new YuzDAO(kullanici);
+			System.out.println("kul id:"+kullanici);
+			yuzDAO = new YuzDAO(kullanici);
 			yuzTableModel = new YuzTableModel(kullanici);
-			System.out.println("Ad:" + yuzTableModel.getColumnName(2));
 			yuzTable = new JTable(yuzTableModel);
 			yuzTable.setBackground(Color.LIGHT_GRAY);
 			yuzTable.getColumnModel().getColumn(0).setPreferredWidth(20);
@@ -167,7 +167,8 @@ public class App {
 			yuzTable.setRowHeight(279);
 			yuzTable.setFillsViewportHeight(true);
 			yuzTable.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
-			yuzScrollPane = new JScrollPane(yuzTable);
+			yuzScrollPane = new JScrollPane();
+			yuzScrollPane.getViewport().add(yuzTable);
 			yuzScrollPane.setPreferredSize(new Dimension(330, 480));
 			GridBagConstraints c = new GridBagConstraints();
 			c.gridx = 1;
@@ -188,7 +189,7 @@ public class App {
 		}
 	}		
 
-	public static void silEgitButtonlarAyarla() {			
+	public static void silEgitButtonGoster() {			
 		JButton silButton = new JButton("Sil");
 		silButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent event) {
@@ -219,25 +220,37 @@ public class App {
 		dialog.add(buttonsPanel,c);
 	}			
 	
-	public static void taniButtonAyarla() {			
+	private static void goruntuSil(){
+		Yuz yuz = new Yuz();
+		yuz.idVer(secilenGoruntuId);
+		yuzDAO.sil(yuz);
+        yuzTableModel.yenile();
+        //yuzTableModel.fireTableDataChanged();
+        yuzTableModel.fireTableRowsDeleted(secilenGoruntuId, secilenGoruntuId);
+	}	
+	
+	public static void taniButtonuGoster() {			
 		JButton taniButton = new JButton("Yüz Tanı");
 		taniButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent event) {
-				goruntuSil();
+				//goruntuSil();
 			}
 		});
 		taniButton.setAlignmentX(Component.CENTER_ALIGNMENT);		
-		
-		GridLayout gridRowLayout = new GridLayout(1,0);
+		GridLayout gridRowLayout = new GridLayout(3,0);
 		gridRowLayout.setVgap(5);
 		JPanel buttonsPanel = new JPanel(gridRowLayout);
-
 		buttonsPanel.add(taniButton);
-		
+		JLabel tanimaSonucu = new JLabel("");
+		buttonsPanel.add(tanimaSonucu);
+		buttonsPanel.add(taniButton);
 		GridBagConstraints c = new GridBagConstraints();
 
 		c.gridx = 0;
 		c.gridy = 1;
+		//c.ipady =20;
+		//c.fill = GridBagConstraints.NONE;
+		
 		dialog.add(buttonsPanel,c);
 	}			
 	
@@ -280,7 +293,7 @@ public class App {
 	        rectCrop = new Rect(rect.x, rect.y, rect.width, rect.height);
 	    }
 	    if(rectCrop != null){
-	    	//System.out.println("not null");
+	    	System.out.println("not null");
 	    	Mat image_roi = new Mat(image,rectCrop);
 	    	Imgcodecs.imwrite("src/main/resources/yuz_goruntu.jpg",image_roi);
 	    }
@@ -299,14 +312,10 @@ public class App {
         }        
         Yuz yuz = new Yuz();
         yuz.goruntuVer(ikiliDosya);
+        //System.out.println(yuz.goruntuAl());
         yuzDAO.ekle(yuz);        
         yuzTableModel.yenile();
         yuzTableModel.fireTableDataChanged();
 	}
         
-	private static void goruntuSil(){
-		yuzDAO.sil(secilenGoruntuId);
-        yuzTableModel.yenile();
-        yuzTableModel.fireTableRowsDeleted(secilenGoruntuId, secilenGoruntuId);
-	}
 }

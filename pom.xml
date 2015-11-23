@@ -30,7 +30,7 @@
                 <configuration>
                     <source>1.8</source>
                     <target>1.8</target>
-		    <encoding>UTF-8</encoding>
+		    		<encoding>UTF-8</encoding>
                 </configuration>
         <executions>
           <execution>
@@ -149,8 +149,11 @@
 		<version>3.0.0</version>
 		<classifier>natives-windows</classifier>
 	</dependency>
-    
-
+    <dependency>
+    	<groupId>org.bytedeco</groupId>
+  	    <artifactId>javacv</artifactId>
+     	<version>1.1</version>
+  	</dependency>
   </dependencies>
   
 </project>

@@ -23,7 +23,7 @@ public final class YuzDAO {
    static final String DB_URL = "jdbc:mysql://localhost/yuz_tanima";
 
    static final String USER = "root";
-   static final String PASS = "";
+   static final String PASS = "kaya";
 
    Connection conn = null;
    Statement stmt = null;   
@@ -36,16 +36,16 @@ public final class YuzDAO {
   
    public YuzDAO(Kullanici kullanici){
 	    this.kullanici = kullanici;
-	    bul();
+	    //bul();
    }  
 
   List<Yuz> list() {    
-	  System.out.println(table.values());
+	  //System.out.println(table.values());
 	  bul();
 	  List<Yuz> result = new ArrayList<>(table.values());
 	  System.out.println("Array list:"+result);
 	  Collections.sort(result);
-	  System.out.println("Yüz:"+result);
+	  //System.out.println("Yüz:"+result);
 	  return result;
   }  
   
@@ -85,16 +85,16 @@ public final class YuzDAO {
 	}  
 
   /** Change an existing {@link Kullanici}. */
-  public void sil(int id) {
+  public void sil(Yuz yuz) {
 	   try{
 		      //STEP 2: Register JDBC driver
 	      Class.forName("com.mysql.jdbc.Driver");
 	
 	      //STEP 3: Open a connection
 	      conn = DriverManager.getConnection(DB_URL, USER, PASS);
-	      System.out.println(id);
+	      //System.out.println(id);
 	      PreparedStatement pstmt = conn.prepareStatement("DELETE FROM yuz WHERE id=?");
-	      pstmt.setInt(1, id);
+	      pstmt.setInt(1, yuz.idAl());
 	      pstmt.executeUpdate();
 	      table.clear();
 	   }catch(SQLException se){
@@ -131,7 +131,7 @@ public final class YuzDAO {
 	      stmt = conn.createStatement();
 	      String sql;
 	      sql = "SELECT id, kullanici_id, goruntu FROM yuz WHERE kullanici_id='"+this.kullanici.idAl()+"' ORDER BY id DESC";
-	      System.out.println(sql);
+	      //System.out.println(sql);
 	      ResultSet rs = stmt.executeQuery(sql);
 	      //STEP 5: Extract data from result set
 	      while(rs.next()){
@@ -169,19 +169,4 @@ public final class YuzDAO {
 	   }//end try
 	}
   
-  private void appendTo(StringBuilder aText, Object aField, String aAppend) {
-    if (Util.textAra(Util.format(aField))) {
-      aText.append(Util.format(aField));
-    }
-    else {
-      aText.append(NULL);
-    }
-    aText.append(aAppend);
-  }
-
-  private static String maybeNull(String aText) {
-    return NULL.equals(aText) ? null : aText;
-  }
-
-
 }

@@ -1,7 +1,7 @@
 package com.zk.main;
 
 import com.zk.App;
-import com.zk.yuz_tanima.YuzTanimaAcAction;
+import com.zk.yuz_tanima.YuzTaniAcAction;
 
 import java.awt.Color;
 import java.awt.Dimension;
@@ -99,14 +99,11 @@ public final class MainWindow {
         fDeleteKullaniciAction.setEnabled(true);
         fChangeKullaniciAction.setEnabled(true);
         yuzBulActionAc.setEnabled(true);
-        yuzTanimaAcAction.setEnabled(true);
-        
       }
       else {
         fDeleteKullaniciAction.setEnabled(false);
         fChangeKullaniciAction.setEnabled(false);
         yuzBulActionAc.setEnabled(false);
-        yuzTanimaAcAction.setEnabled(false);
       }
     }
   }
@@ -124,7 +121,7 @@ public final class MainWindow {
     yuzBulActionAc = new YuzBulAcAction(aFrame, fKullaniciTable, fKullaniciTableModel);
     fileMenu.add(new JMenuItem(yuzBulActionAc));
     
-    yuzTanimaAcAction = new YuzTanimaAcAction(aFrame, fKullaniciTable, fKullaniciTableModel);
+    yuzTanimaAcAction = new YuzTaniAcAction(aFrame);
     fileMenu.add(new JMenuItem(yuzTanimaAcAction));
 
     fDeleteKullaniciAction = new KullaniciActionDelete(fKullaniciTable, fKullaniciTableModel);

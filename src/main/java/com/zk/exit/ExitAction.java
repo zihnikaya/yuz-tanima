@@ -15,9 +15,8 @@ public final class ExitAction extends AbstractAction {
   /** Constructor. */
   public ExitAction(){
     super("Çıkış", null);
-    putValue(SHORT_DESCRIPTION, "Uygulamadan ��k"); 
+    putValue(SHORT_DESCRIPTION, "Uygulamadan çık"); 
     putValue(ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_F4, ActionEvent.ALT_MASK));
-    //mnemonic activates only when alt is pressed and held down
     putValue(MNEMONIC_KEY, new Integer(KeyEvent.VK_X) );    
   }
   

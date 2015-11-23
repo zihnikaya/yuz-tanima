@@ -31,19 +31,31 @@ public final class GirisView {
 	  }
 	  
 	  void girisEkraniGoster(){
-		    JFrame NO_OWNER = null;
-		    fStandardDialog = new StandardDialog(
-		      NO_OWNER, "Giriş", 
-		      true, OnClose.DISPOSE, getBody(), getButtons()
-		    );
-		    fStandardDialog.setDefaultButton(fGiris);
-		    fStandardDialog.display();
+	    JFrame NO_OWNER = null;
+	    fStandardDialog = new StandardDialog(
+	      NO_OWNER, "Giriş", 
+	      true, OnClose.DISPOSE, getBody(), getButtons()
+	    );
+	    fStandardDialog.setDefaultButton(fGiris);
+	    fStandardDialog.display();
 	  }	  
 	  
 	  private JPanel getBody(){
 		    JPanel result = new JPanel();
 		    result.setLayout(new BoxLayout(result, BoxLayout.Y_AXIS));
-		    	
+		    
+		    fMesaj = new JLabel("Lütfen giriş yaponız.");
+		    result.add(fMesaj);
+		    result.add(Box.createVerticalStrut(5));
+		    
+		    result.add(new JLabel("Kullanıcı adı:"));
+		    fKulAdi = new JTextField();
+		    fKulAdi.setColumns(15);
+		    result.add(fKulAdi);
+		    
+		    result.add(new JLabel("Şifre:"));
+		    fSifre = new JPasswordField();
+		    result.add(fSifre);
 		    
 		    UiUtil.alignAllX(result, UiUtil.AlignX.LEFT);
 		    return result;
@@ -54,7 +66,12 @@ public final class GirisView {
 		    fGiris = new JButton("Giriş");
 		    fGiris.setActionCommand(GirisController.GIRIS);
 		    fGiris.addActionListener(fController);
-		    result.add(fGiris);		    
+		    result.add(fGiris);
+		    
+		    JButton cancel = new JButton("Vazgeç");
+		    cancel.setActionCommand(GirisController.VAZGEC);
+		    cancel.addActionListener(fController);
+		    result.add(cancel);
 		    
 		    return result;
 	  }	  
