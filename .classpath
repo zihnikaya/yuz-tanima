@@ -15,7 +15,7 @@
 	<classpathentry kind="var" path="M2_REPO/mysql/mysql-connector-java/5.1.6/mysql-connector-java-5.1.6.jar"/>
 	<classpathentry kind="var" path="M2_REPO/com/zk/opencv/opencvjar/3.0.0/opencvjar-3.0.0.jar">
 		<attributes>
-			<attribute name="org.eclipse.jdt.launching.CLASSPATH_ATTR_LIBRARY_PATH_ENTRY" value="C:/Users/pc/Documents/GitHub/yuz-tanima/target/natives"/>
+			<attribute name="org.eclipse.jdt.launching.CLASSPATH_ATTR_LIBRARY_PATH_ENTRY" value="C:/Users/kaya/Documents/GitHub/yuz-tanima/target/natives"/>
 		</attributes>
 	</classpathentry>
 	<classpathentry kind="src" output="target/test-classes" path="src/test/java">

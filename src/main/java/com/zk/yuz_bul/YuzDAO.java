@@ -23,7 +23,7 @@ public final class YuzDAO {
    static final String DB_URL = "jdbc:mysql://localhost/yuz_tanima";
 
    static final String USER = "root";
-   static final String PASS = "";
+   static final String PASS = "kaya";
 
    Connection conn = null;
    Statement stmt = null;   
@@ -147,7 +147,6 @@ public final class YuzDAO {
 	}
   
   public List<Yuz> bul() {
-	  Yuz yuz=new Yuz();
 	  List<Yuz> yuzler = new ArrayList<Yuz>(); 
 	  try{
 	      Class.forName("com.mysql.jdbc.Driver");
@@ -160,6 +159,7 @@ public final class YuzDAO {
 	    	 int id = rs.getInt("id");
 	    	 int kulId = rs.getInt("kullanici_id");
 		     byte[] goruntu = rs.getBytes("goruntu");
+			 Yuz yuz=new Yuz();
 	    	 yuz.goruntuVer(goruntu);
 		     yuz.idVer(id);
 		     yuz.kulIdVer(kulId);

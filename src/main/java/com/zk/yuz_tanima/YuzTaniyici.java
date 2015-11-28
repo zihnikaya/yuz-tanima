@@ -8,6 +8,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.ListIterator;
 
+import org.opencv.core.CvType;
+
 import com.zk.kullanici.Kullanici;
 import com.zk.kullanici.KullaniciDAO;
 import com.zk.yuz_bul.Yuz;
@@ -59,16 +61,17 @@ public class YuzTaniyici {
         YuzDAO yuzDAO = new YuzDAO(kulIter.next());
         
         List<Yuz> yuzler = yuzDAO.bul();
-    	ListIterator<Yuz> yuzlerIter = yuzler.listIterator();
-    	System.out.println(yuzler.size());
-    	
-    	
+        ListIterator<Yuz> yuzlerIter = yuzler.listIterator();
+    	int sayac=0;
     	while(yuzlerIter.hasNext()){
-        	System.out.println(yuzlerIter.next().toString());
-       		//System.out.println(yuzlerIter.next().idAl() + yuzlerIter.next().kulIdAl() + yuzlerIter.next().goruntuAl().toString());
+        	Yuz yuz = yuzlerIter.next();
+    		System.out.println(yuz.kulIdAl().toString()+'-'+yuz.idAl().toString());
+    		Mat goruntu = new Mat(265, 265, CvType.CV_8UC1);
+    		byte[] p = yuz.goruntuAl();
+    		goruntu.put(0,0,p);
         }
     	
-        /*
+        /* 
         for (File image : imageFiles) {
             Mat img = imread(image.getAbsolutePath(), CV_LOAD_IMAGE_GRAYSCALE);
 

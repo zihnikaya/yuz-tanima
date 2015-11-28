@@ -27,7 +27,7 @@ public final class YuzTanimaDAO {
    static final String DB_URL = "jdbc:mysql://localhost/yuz_tanima";
 
    static final String USER = "root";
-   static final String PASS = "";
+   static final String PASS = "kaya";
 
    Connection conn = null;
    Statement stmt = null;   
