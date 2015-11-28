@@ -4,6 +4,7 @@ public class Yuz implements Comparable<Yuz> {
 	 
 	private Integer id;
 	private byte[] goruntu;
+	private int kulId;
  
 	public Yuz() {		
 	}
@@ -19,6 +20,14 @@ public class Yuz implements Comparable<Yuz> {
 	public void idVer(Integer id) {
 		this.id = id;
 	}
+	
+	public Integer kulIdAl() {
+		return this.kulId;
+	}
+ 
+	public void kulIdVer(Integer id) {
+		this.kulId = id;
+	}	
  
 	public byte[] goruntuAl() {
 		return this.goruntu;

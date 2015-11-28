@@ -22,26 +22,22 @@ import com.zk.util.Util;
 
 public final class KullaniciDAO {
 	
-   // PRIVATE 
-   // JDBC driver name and database URL
    static final String JDBC_DRIVER = "com.mysql.jdbc.Driver";  
    static final String DB_URL = "jdbc:mysql://localhost/yuz_tanima?useUnicode=true&characterEncoding=UTF-8";
 
-   //  Database credentials
    static final String USER = "root";
-   static final String PASS = "kaya";
+   static final String PASS = "";
 
    Connection conn = null;
    Statement stmt = null;   
 	   
   private static final Map<String, Kullanici> fTable = new LinkedHashMap<>();
-  private static final String DELIMITER = "|";
   private static final String NULL = "NULL";
   private final static Charset ENCODING = StandardCharsets.UTF_8;	
   
   public void KullaniciDao(){
 	  bul();   
- }  
+  }  
 
   List<Kullanici> list() {    
 	bul();
@@ -52,10 +48,7 @@ public final class KullaniciDAO {
   
   public void ekle(Kullanici aKullanici) {
 	   try{
-	      //STEP 2: Register JDBC driver
 	      Class.forName("com.mysql.jdbc.Driver");
-
-	      //STEP 3: Open a connection
 	      conn = DriverManager.getConnection(DB_URL, USER, PASS);
 	      
 	      PreparedStatement pstmt = conn.prepareStatement("INSERT INTO kullanici (ogrenci_no, ad, soyad,bolum) VALUES (?, ?, ?, ?)", PreparedStatement.RETURN_GENERATED_KEYS);
@@ -67,15 +60,12 @@ public final class KullaniciDAO {
 	      
 	      ResultSet keys = pstmt.getGeneratedKeys(); 
 	      keys.next();  
-	      idDenBul(keys.getString(1));
+	      bul(keys.getString(1));
 	   }catch(SQLException se){
-	      //Handle errors for JDBC
 	      se.printStackTrace();
 	   }catch(Exception e){
-	      //Handle errors for Class.forName
 	      e.printStackTrace();
 	   }finally{
-	      //finally block used to close resources
 	      try{
 	         if(stmt!=null)
 	            conn.close();
@@ -86,21 +76,14 @@ public final class KullaniciDAO {
 	            conn.close();
 	      }catch(SQLException se){
 	         se.printStackTrace();
-	      }//end finally try
-	   }//end try
+	      }
+	   }
 	}  
 
   void degistir(Kullanici aKullanici) {
 	   try{
-		      //STEP 2: Register JDBC driver
 	      Class.forName("com.mysql.jdbc.Driver");
-	
-	      //STEP 3: Open a connection
 	      conn = DriverManager.getConnection(DB_URL, USER, PASS);
-	      
-	      //STEP 4: Execute a query
-	      //stmt = conn.createStatement();
-	      
 	      PreparedStatement pstmt = conn.prepareStatement("UPDATE kullanici SET ogrenci_no=?, ad=?, soyad=?, bolum=? WHERE id=?");
 	      pstmt.setString(1, aKullanici.ogrNoAl());
 	      pstmt.setString(2, aKullanici.adAl());
@@ -110,82 +93,62 @@ public final class KullaniciDAO {
 	      pstmt.executeUpdate();	      
 	      bul();
 	   }catch(SQLException se){
-	      //Handle errors for JDBC
 	      se.printStackTrace();
 	   }catch(Exception e){
-	      //Handle errors for Class.forName
 	      e.printStackTrace();
 	   }finally{
-	      //finally block used to close resources
 	      try{
 	         if(stmt!=null)
 	            conn.close();
 	      }catch(SQLException se){
-	      }// do nothing
+	      }
 	      try{
 	         if(conn!=null)
 	            conn.close();
 	      }catch(SQLException se){
 	         se.printStackTrace();
-	      }//end finally try
-	   }//end try 
+	      }
+	   }
   }
 
-  /** Change an existing {@link Kullanici}. */
   void sil(Kullanici aKullanici) {
 	   try{
-		      //STEP 2: Register JDBC driver
 	      Class.forName("com.mysql.jdbc.Driver");
-	
-	      //STEP 3: Open a connection
 	      conn = DriverManager.getConnection(DB_URL, USER, PASS);
-	      
-	      //STEP 4: Execute a query
-	      //stmt = conn.createStatement();
-	      
 	      PreparedStatement pstmt = conn.prepareStatement("DELETE FROM kullanici WHERE id=?");
 	      pstmt.setString(1, aKullanici.idAl());
 	      pstmt.executeUpdate();
 	      fTable.clear();
 	      bul();
 	   }catch(SQLException se){
-	      //Handle errors for JDBC
 	      se.printStackTrace();
 	   }catch(Exception e){
-	      //Handle errors for Class.forName
 	      e.printStackTrace();
 	   }finally{
-	      //finally block used to close resources
 	      try{
 	         if(stmt!=null)
 	            conn.close();
 	      }catch(SQLException se){
-	      }// do nothing
+	      }
 	      try{
 	         if(conn!=null)
 	            conn.close();
 	      }catch(SQLException se){
 	         se.printStackTrace();
-	      }//end finally try
-	   }//end try 
+	      }
+	   }
   }  
   
-  public void bul() {
-	   try{
-	      //STEP 2: Register JDBC driver
+  public List<Kullanici> bul() {
+	  List<Kullanici> kullar=null; 
+	  try{
 	      Class.forName("com.mysql.jdbc.Driver");
-
-	      //STEP 3: Open a connection
 	      conn = DriverManager.getConnection(DB_URL, USER, PASS);
-	      
-	      //STEP 4: Execute a query
 	      stmt = conn.createStatement();
 	      String sql;
 	      sql = "SELECT id, ogrenci_no, ad, soyad,bolum FROM kullanici";
-	      ResultSet rs = stmt.executeQuery(sql);
-	      //STEP 5: Extract data from result set
+	      ResultSet rs = stmt.executeQuery(sql);	      
 	      while(rs.next()){
-	         //Retrieve by column name  	         
 	    	 String id = rs.getString("id");
 	    	 String ogrNo = rs.getString("ogrenci_no");
 		     String ad = rs.getString("ad");
@@ -193,131 +156,106 @@ public final class KullaniciDAO {
 		     String bolum = rs.getString("bolum");
 		     Kullanici kullanici = new Kullanici(id, ogrNo, ad, soyad, bolum);
 		     fTable.put(kullanici.idAl(), kullanici);
+		     kullar = new ArrayList<Kullanici>(); 
+		     kullar.add(kullanici);
 	      }
-	      //STEP 6: Clean-up environment
+	      Collections.sort(kullar);
 	      rs.close();
 	      stmt.close();
 	      conn.close();
 	   }catch(SQLException se){
-	      //Handle errors for JDBC
 	      se.printStackTrace();
 	   }catch(Exception e){
-	      //Handle errors for Class.forName
 	      e.printStackTrace();
 	   }finally{
-	      //finally block used to close resources
 	      try{
 	         if(stmt!=null)
 	            stmt.close();
 	      }catch(SQLException se2){
-	      }// nothing we can do
+	      }
 	      try{
 	         if(conn!=null)
 	            conn.close();
 	      }catch(SQLException se){
 	         se.printStackTrace();
-	      }//end finally try
-	   }//end try
+	      }
+	   }
+	   return kullar;
 	}
   
-  public void idDenBul(String aId) {
+  public void bul(int id) {
 	   try{
-	      //STEP 2: Register JDBC driver
 	      Class.forName("com.mysql.jdbc.Driver");
-
-	      //STEP 3: Open a connection
 	      conn = DriverManager.getConnection(DB_URL, USER, PASS);
-	      
-	      //STEP 4: Execute a query
 	      stmt = conn.createStatement();
 	      String sql;
-	      sql = "SELECT id, ogrenci_no, ad, soyad,bolum FROM kullanici WHERE id='"+aId+"'";
+	      sql = "SELECT id, ogrenci_no, ad, soyad, bolum FROM kullanici WHERE id='"+id+"'";
 	      ResultSet rs = stmt.executeQuery(sql);
-	      //STEP 5: Extract data from result set
 	      rs.next();
-          //Retrieve by column name  	         
-    	  String id = rs.getString("id");
+    	  String kulId = rs.getString("id");
     	  String ogrNo = rs.getString("ogrenci_no");
 	      String ad = rs.getString("ad");
 	      String soyad = rs.getString("soyad");
 	      String bolum = rs.getString("bolum");
-	      Kullanici kullanici = new Kullanici(id, ogrNo, ad, soyad,bolum);
+	      Kullanici kullanici = new Kullanici(kulId, ogrNo, ad, soyad, bolum);
 		  fTable.put(kullanici.idAl(), kullanici);
-	      
-	      //STEP 6: Clean-up environment
 	      rs.close();
 	      stmt.close();
 	      conn.close();
 	   }catch(SQLException se){
-	      //Handle errors for JDBC
 	      se.printStackTrace();
 	   }catch(Exception e){
-	      //Handle errors for Class.forName
 	      e.printStackTrace();
 	   }finally{
-	      //finally block used to close resources
 	      try{
 	         if(stmt!=null)
 	            stmt.close();
 	      }catch(SQLException se2){
-	      }// nothing we can do
+	      }
 	      try{
 	         if(conn!=null)
 	            conn.close();
 	      }catch(SQLException se){
 	         se.printStackTrace();
-	      }//end finally try
-	   }//end try
+	      }
+	   }
 	}  
     
-  public void ogrNoDanBul(String ogrNo) {
+  public void bul(String ogrNo) {
 	   try{
-	      //STEP 2: Register JDBC driver
 	      Class.forName("com.mysql.jdbc.Driver");
-
-	      //STEP 3: Open a connection
 	      conn = DriverManager.getConnection(DB_URL, USER, PASS);
-	      
-	      //STEP 4: Execute a query
 	      stmt = conn.createStatement();
 	      String sql;
-	      sql = "SELECT id, ogrenci_no, ad, soyad,bolum FROM kullanici WHERE ogrenci_no='"+ogrNo+"'";
+	      sql = "SELECT id, ogrenci_no, ad, soyad, bolum FROM kullanici WHERE ogrenci_no='"+ogrNo+"'";
 	      ResultSet rs = stmt.executeQuery(sql);
-	      //STEP 5: Extract data from result set
 	      rs.next();
-         //Retrieve by column name  	         
 	      String id = rs.getString("id");
-	      //String ogrNo = rs.getString("ogrenci_no");
 	      String ad = rs.getString("ad");
 	      String soyad = rs.getString("soyad");
 	      String bolum = rs.getString("bolum");
 	      Kullanici kullanici = new Kullanici(id, ogrNo, ad, soyad, bolum);
 		  fTable.put(kullanici.idAl(), kullanici);
-	      
-	      //STEP 6: Clean-up environment
 	      rs.close();
 	      stmt.close();
 	      conn.close();
 	   }catch(SQLException se){
-	      //Handle errors for JDBC
 	      se.printStackTrace();
 	   }catch(Exception e){
-	      //Handle errors for Class.forName
 	      e.printStackTrace();
 	   }finally{
-	      //finally block used to close resources
 	      try{
 	         if(stmt!=null)
 	            stmt.close();
 	      }catch(SQLException se2){
-	      }// nothing we can do
+	      }
 	      try{
 	         if(conn!=null)
 	            conn.close();
 	      }catch(SQLException se){
 	         se.printStackTrace();
-	      }//end finally try
-	   }//end try
+	      }
+	   }
 	}    
   
   private void appendTo(StringBuilder aText, Object aField, String aAppend) {

@@ -23,7 +23,7 @@ public final class YuzDAO {
    static final String DB_URL = "jdbc:mysql://localhost/yuz_tanima";
 
    static final String USER = "root";
-   static final String PASS = "kaya";
+   static final String PASS = "";
 
    Connection conn = null;
    Statement stmt = null;   
@@ -34,6 +34,9 @@ public final class YuzDAO {
    
    private Kullanici kullanici;
   
+   public YuzDAO(){
+	   
+   }
    public YuzDAO(Kullanici kullanici){
 	    this.kullanici = kullanici;
 	    //bul();
@@ -41,9 +44,9 @@ public final class YuzDAO {
 
   List<Yuz> list() {    
 	  //System.out.println(table.values());
-	  bul();
+	  kulIddenBul();
 	  List<Yuz> result = new ArrayList<>(table.values());
-	  System.out.println("Array list:"+result);
+	  //System.out.println("Array list:"+result);
 	  Collections.sort(result);
 	  //System.out.println("Yüz:"+result);
 	  return result;
@@ -52,9 +55,7 @@ public final class YuzDAO {
   public void ekle(Yuz yuz) {
 	   try{
 	      Class.forName("com.mysql.jdbc.Driver");
-
 	      conn = DriverManager.getConnection(DB_URL, USER, PASS);	      
-	      
 	      PreparedStatement pstmt = conn.prepareStatement("INSERT INTO yuz (kullanici_id, goruntu) VALUES (?, ?)", PreparedStatement.RETURN_GENERATED_KEYS);
 	      pstmt.setString(1, this.kullanici.idAl());
 	      pstmt.setBytes(2, yuz.goruntuAl());
@@ -63,79 +64,61 @@ public final class YuzDAO {
 	      ResultSet keys = pstmt.getGeneratedKeys(); 
 	      keys.next();  
 	   }catch(SQLException se){
-	      //Handle errors for JDBC
 	      se.printStackTrace();
 	   }catch(Exception e){
-	      //Handle errors for Class.forName
 	      e.printStackTrace();
 	   }finally{
-	      //finally block used to close resources
 	      try{
 	         if(stmt!=null)
 	            conn.close();
 	      }catch(SQLException se){
-	      }// do nothing
+	      }
 	      try{
 	         if(conn!=null)
 	            conn.close();
 	      }catch(SQLException se){
 	         se.printStackTrace();
-	      }//end finally try
-	   }//end try
+	      }
+	   }
 	}  
 
   /** Change an existing {@link Kullanici}. */
   public void sil(Yuz yuz) {
 	   try{
-		      //STEP 2: Register JDBC driver
 	      Class.forName("com.mysql.jdbc.Driver");
-	
-	      //STEP 3: Open a connection
 	      conn = DriverManager.getConnection(DB_URL, USER, PASS);
-	      //System.out.println(id);
 	      PreparedStatement pstmt = conn.prepareStatement("DELETE FROM yuz WHERE id=?");
 	      pstmt.setInt(1, yuz.idAl());
 	      pstmt.executeUpdate();
 	      table.clear();
 	   }catch(SQLException se){
-	      //Handle errors for JDBC
 	      se.printStackTrace();
 	   }catch(Exception e){
-	      //Handle errors for Class.forName
 	      e.printStackTrace();
 	   }finally{
-	      //finally block used to close resources
 	      try{
 	         if(stmt!=null)
 	            conn.close();
 	      }catch(SQLException se){
-	      }// do nothing
+	      }
 	      try{
 	         if(conn!=null)
 	            conn.close();
 	      }catch(SQLException se){
 	         se.printStackTrace();
-	      }//end finally try
-	   }//end try 
+	      }
+	   }
   }  
   
-  public void bul() {
+  public void kulIddenBul() {
 	   try{
-	      //STEP 2: Register JDBC driver
 	      Class.forName("com.mysql.jdbc.Driver");
-
-	      //STEP 3: Open a connection
 	      conn = DriverManager.getConnection(DB_URL, USER, PASS);
-	      
-	      //STEP 4: Execute a query
 	      stmt = conn.createStatement();
 	      String sql;
 	      sql = "SELECT id, kullanici_id, goruntu FROM yuz WHERE kullanici_id='"+this.kullanici.idAl()+"' ORDER BY id DESC";
-	      //System.out.println(sql);
 	      ResultSet rs = stmt.executeQuery(sql);
-	      //STEP 5: Extract data from result set
 	      while(rs.next()){
-	         //Retrieve by column name  	         
 	    	 int id = rs.getInt("id");
 	    	 String kullanici_id = rs.getString("kullanici_id");
 		     byte[] goruntu = rs.getBytes("goruntu");
@@ -143,30 +126,64 @@ public final class YuzDAO {
 		     yuz.idVer(id);
 	    	 table.put(yuz.idAl().toString(), yuz);
 	      }
-	      //STEP 6: Clean-up environment
 	      rs.close();
 	      stmt.close();
 	      conn.close();
 	   }catch(SQLException se){
-	      //Handle errors for JDBC
-	      //se.printStackTrace();
 	   }catch(Exception e){
-	      //Handle errors for Class.forName
-	      //e.printStackTrace();
 	   }finally{
-	      //finally block used to close resources
 	      try{
 	         if(stmt!=null)
 	            stmt.close();
 	      }catch(SQLException se2){
-	      }// nothing we can do
+	      }
 	      try{
 	         if(conn!=null)
 	            conn.close();
 	      }catch(SQLException se){
 	         se.printStackTrace();
-	      }//end finally try
-	   }//end try
+	      }
+	   }
+	}
+  
+  public List<Yuz> bul() {
+	  Yuz yuz=new Yuz();
+	  List<Yuz> yuzler = new ArrayList<Yuz>(); 
+	  try{
+	      Class.forName("com.mysql.jdbc.Driver");
+	      conn = DriverManager.getConnection(DB_URL, USER, PASS);
+	      stmt = conn.createStatement();
+	      String sql;
+	      sql = "SELECT id, kullanici_id, goruntu FROM yuz ORDER BY id DESC";
+	      ResultSet rs = stmt.executeQuery(sql);
+	      while(rs.next()){
+	    	 int id = rs.getInt("id");
+	    	 int kulId = rs.getInt("kullanici_id");
+		     byte[] goruntu = rs.getBytes("goruntu");
+	    	 yuz.goruntuVer(goruntu);
+		     yuz.idVer(id);
+		     yuz.kulIdVer(kulId);
+		     yuzler.add(yuz);
+	      }
+	      rs.close();
+	      stmt.close();
+	      conn.close();	      
+	   }catch(SQLException se){
+	   }catch(Exception e){
+	   }finally{
+	      try{
+	         if(stmt!=null)
+	            stmt.close();
+	      }catch(SQLException se2){
+	      }
+	      try{
+	         if(conn!=null)
+	            conn.close();
+	      }catch(SQLException se){
+	         se.printStackTrace();
+	      }
+	   }
+	  return yuzler;	   
 	}
   
 }

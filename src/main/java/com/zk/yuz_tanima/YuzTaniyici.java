@@ -1,8 +1,18 @@
 package com.zk.yuz_tanima;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FilenameFilter;
 import java.nio.IntBuffer;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.ListIterator;
+
+import com.zk.kullanici.Kullanici;
+import com.zk.kullanici.KullaniciDAO;
+import com.zk.yuz_bul.Yuz;
+import com.zk.yuz_bul.YuzDAO;
+
 import static org.bytedeco.javacpp.opencv_face.*;
 import static org.bytedeco.javacpp.opencv_core.*;
 import static org.bytedeco.javacpp.opencv_imgcodecs.*;
@@ -34,28 +44,31 @@ import static org.bytedeco.javacpp.opencv_imgcodecs.*;
  * tian Bjelland
  */
 public class YuzTaniyici {
-    public static void main(String[] args) {
-        String trainingDir = args[0];
-        Mat testImage = imread(args[1], CV_LOAD_IMAGE_GRAYSCALE);
+    public static void tani() {
+        
+    	Mat testImage = imread("src/main/resources/yuz_goruntu.jpg", CV_LOAD_IMAGE_GRAYSCALE);
+        
+        MatVector images = new MatVector();
 
-        File root = new File(trainingDir);
-
-        FilenameFilter imgFilter = new FilenameFilter() {
-            public boolean accept(File dir, String name) {
-                name = name.toLowerCase();
-                return name.endsWith(".jpg") || name.endsWith(".pgm") || name.endsWith(".png");
-            }
-        };
-
-        File[] imageFiles = root.listFiles(imgFilter);
-
-        MatVector images = new MatVector(imageFiles.length);
-
-        Mat labels = new Mat(imageFiles.length, 1, CV_32SC1);
+        Mat labels = new Mat(1, CV_32SC1);
         IntBuffer labelsBuf = labels.getIntBuffer();
 
-        int counter = 0;
-
+        KullaniciDAO kulDAO = new KullaniciDAO();
+        List<Kullanici> kullar = kulDAO.bul();
+        ListIterator<Kullanici> kulIter = kullar.listIterator();
+        YuzDAO yuzDAO = new YuzDAO(kulIter.next());
+        
+        List<Yuz> yuzler = yuzDAO.bul();
+    	ListIterator<Yuz> yuzlerIter = yuzler.listIterator();
+    	System.out.println(yuzler.size());
+    	
+    	
+    	while(yuzlerIter.hasNext()){
+        	System.out.println(yuzlerIter.next().toString());
+       		//System.out.println(yuzlerIter.next().idAl() + yuzlerIter.next().kulIdAl() + yuzlerIter.next().goruntuAl().toString());
+        }
+    	
+        /*
         for (File image : imageFiles) {
             Mat img = imread(image.getAbsolutePath(), CV_LOAD_IMAGE_GRAYSCALE);
 
@@ -67,7 +80,7 @@ public class YuzTaniyici {
 
             counter++;
         }
-
+	    */
         //FaceRecognizer faceRecognizer = createFisherFaceRecognizer();
         FaceRecognizer faceRecognizer = createEigenFaceRecognizer();
         // FaceRecognizer faceRecognizer = createLBPHFaceRecognizer()

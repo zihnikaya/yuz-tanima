@@ -12,7 +12,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.FileInputStream;
-
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JDialog;
@@ -44,6 +43,7 @@ import com.zk.util.ImageProcessor;
 import com.zk.yuz_bul.Yuz;
 import com.zk.yuz_bul.YuzDAO;
 import com.zk.yuz_bul.YuzTableModel;
+import com.zk.yuz_tanima.YuzTaniyici;
 
 import org.opencv.core.*;
 public class App {
@@ -90,11 +90,8 @@ public class App {
 		dialog = new JDialog(sahipsiz,"Yüz Bulma", true);  
 		dialog.setLayout(new GridBagLayout());
 		dialog.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);  		
-		
 		dialog.setSize(400,400);  
-		
 		setupImage();
-		   
 	}
 
 	public static void GUIYuzTanima() {
@@ -141,8 +138,6 @@ public class App {
 				
 		gbc.gridx = 1;
 		gbc.gridy = 0;
-        //gbc.weightx = 100;
-        //gbc.weighty = 20;	
 		gbc.ipadx=0;
 		gbl.setConstraints(kaydetButton, gbc);
 		adKaydetPanel.add(kaydetButton, gbc);		
@@ -150,7 +145,6 @@ public class App {
 		GridBagConstraints c = new GridBagConstraints();
 		c.gridx = 0;
 		c.gridy = 1;
-		//c.fill = GridBagConstraints.HORIZONTAL;
 		c.anchor = GridBagConstraints.WEST;
 		dialog.add(adKaydetPanel,c);	
 	}	
@@ -179,8 +173,6 @@ public class App {
 		        public void valueChanged(ListSelectionEvent event) {
 		            secilenGoruntuId = (int) (yuzTable.getValueAt(yuzTable.getSelectedRow(), 0));
 		            System.out.println(secilenGoruntuId);
-		            //print first column value from selected row
-		            //System.out.println(yuzTable.getValueAt(yuzTable.getSelectedRow(), 0).toString());
 		        }
 		    });			
 			
@@ -197,7 +189,7 @@ public class App {
 			}
 		});
 		silButton.setAlignmentX(Component.RIGHT_ALIGNMENT);		
-
+		/*
 		JButton ogretButton = new JButton("Eğit");
 		ogretButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent event) {
@@ -205,13 +197,13 @@ public class App {
 			}
 		});
 		ogretButton.setAlignmentX(Component.RIGHT_ALIGNMENT);		
-		
+		*/
 		GridLayout gridRowLayout = new GridLayout(1,0);
 		gridRowLayout.setVgap(5);
 		JPanel buttonsPanel = new JPanel(gridRowLayout);
 
 		buttonsPanel.add(silButton);
-		buttonsPanel.add(ogretButton);	
+		//buttonsPanel.add(ogretButton);	
 		
 		GridBagConstraints c = new GridBagConstraints();
 
@@ -233,7 +225,7 @@ public class App {
 		JButton taniButton = new JButton("Yüz Tanı");
 		taniButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent event) {
-				//goruntuSil();
+				YuzTaniyici.tani();
 			}
 		});
 		taniButton.setAlignmentX(Component.CENTER_ALIGNMENT);		
@@ -245,12 +237,8 @@ public class App {
 		buttonsPanel.add(tanimaSonucu);
 		buttonsPanel.add(taniButton);
 		GridBagConstraints c = new GridBagConstraints();
-
 		c.gridx = 0;
 		c.gridy = 1;
-		//c.ipady =20;
-		//c.fill = GridBagConstraints.NONE;
-		
 		dialog.add(buttonsPanel,c);
 	}			
 	
