@@ -8,8 +8,10 @@ import java.awt.GridBagLayout;
 import java.awt.GridLayout;
 import java.awt.Image;
 import java.awt.Insets;
+import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.FileInputStream;
 import javax.swing.ImageIcon;
@@ -222,7 +224,7 @@ public class App {
 	}	
 	
 	public static void taniButtonuGoster() {			
-		JButton taniButton = new JButton("Yüz Tanı");
+		JButton taniButton = new JButton("Giriş");
 		taniButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent event) {
 				YuzTaniyici.tani();
@@ -234,6 +236,7 @@ public class App {
 		JPanel buttonsPanel = new JPanel(gridRowLayout);
 		buttonsPanel.add(taniButton);
 		JLabel tanimaSonucu = new JLabel("");
+		tanimaSonucu.setPreferredSize(new Dimension(100, 5));
 		buttonsPanel.add(tanimaSonucu);
 		buttonsPanel.add(taniButton);
 		GridBagConstraints c = new GridBagConstraints();
@@ -273,33 +276,40 @@ public class App {
 	
 	private static void yuzBul(Mat image) {
 	    MatOfRect faceDetections = new MatOfRect();
-	    faceDetector.detectMultiScale(	image, faceDetections, 1.1, 7,0,new Size(250,40),new Size());
+	    faceDetector.detectMultiScale(	image, faceDetections, 1.1, 7,0, new Size(150,40), new Size());
 	    Rect rectCrop=null;
 	    		
 	    for (Rect rect : faceDetections.toArray()) {
 	        Imgproc.rectangle(image, new Point(rect.x, rect.y), new Point(rect.x + rect.width, rect.y + rect.height), new Scalar(0, 255, 0));
 	        rectCrop = new Rect(rect.x, rect.y, rect.width, rect.height);
 	    }
+	    
 	    if(rectCrop != null){
-	    	System.out.println("not null");
 	    	Mat image_roi = new Mat(image,rectCrop);
 	    	Imgcodecs.imwrite("src/main/resources/yuz_goruntu.jpg",image_roi);
+	    	System.out.println(image_roi.size());
 	    }
+	    
 	}
 	
 	private static void goruntuKaydet(){
-		File file = new File("src/main/resources/yuz_goruntu.jpg");
-        byte[] ikiliDosya = new byte[(int) file.length()];
+		File dosyaYolu = new File("src/main/resources/yuz_goruntu.jpg");
+		
+		Toolkit toolkit = Toolkit.getDefaultToolkit(); 
+	    Image goruntu = toolkit.getImage(dosyaYolu.getPath());
+	    goruntu.getScaledInstance(100, 100, Image.SCALE_DEFAULT); 
+	    
+		byte[] dosya = new byte[100*100];
         
         try {
-	     FileInputStream fileInputStream = new FileInputStream(file);
-	     	fileInputStream.read(ikiliDosya);
+	     FileInputStream fileInputStream = new FileInputStream(dosyaYolu);
+	     	fileInputStream.read(dosya);
 	     	fileInputStream.close();
         } catch (Exception e) {
         	e.printStackTrace();
         }        
         Yuz yuz = new Yuz();
-        yuz.goruntuVer(ikiliDosya);
+        yuz.goruntuVer(dosya);
         //System.out.println(yuz.goruntuAl());
         yuzDAO.ekle(yuz);        
         yuzTableModel.yenile();

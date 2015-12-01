@@ -1,12 +1,22 @@
 package com.zk.yuz_tanima;
 
+import java.awt.Image;
+import java.awt.Toolkit;
+import java.awt.image.BufferedImage;
+import java.awt.image.DataBufferByte;
+import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FilenameFilter;
+import java.io.IOException;
+import java.io.InputStream;
+import java.nio.ByteBuffer;
 import java.nio.IntBuffer;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ListIterator;
+
+import javax.imageio.ImageIO;
 
 import com.zk.kullanici.Kullanici;
 import com.zk.kullanici.KullaniciDAO;
@@ -48,9 +58,10 @@ public class YuzTaniyici {
         
     	Mat testImage = imread("src/main/resources/yuz_goruntu.jpg", CV_LOAD_IMAGE_GRAYSCALE);
         
-        MatVector images = new MatVector();
+        MatVector goruntuler = new MatVector();
 
         Mat labels = new Mat(1, CV_32SC1);
+        System.out.println("labels:"+labels);
         IntBuffer labelsBuf = labels.getIntBuffer();
 
         KullaniciDAO kulDAO = new KullaniciDAO();
@@ -60,13 +71,32 @@ public class YuzTaniyici {
         
         List<Yuz> yuzler = yuzDAO.bul();
     	ListIterator<Yuz> yuzlerIter = yuzler.listIterator();
-    	System.out.println(yuzler.size());
     	
-    	
+    	int sayac = 0;
     	while(yuzlerIter.hasNext()){
-        	System.out.println(yuzlerIter.next().toString());
-       		//System.out.println(yuzlerIter.next().idAl() + yuzlerIter.next().kulIdAl() + yuzlerIter.next().goruntuAl().toString());
-        }
+        	Yuz yuz = yuzlerIter.next();
+    		System.out.println(yuz.kulIdAl().toString() + '-' + yuz.idAl().toString());
+    		Mat goruntu = new Mat(265, 265, CV_8UC3);
+
+    		InputStream in = new ByteArrayInputStream(yuz.goruntuAl());
+    		BufferedImage bImageFromConvert=null;
+			try {
+				bImageFromConvert = ImageIO.read(in);
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+    		
+    		byte[] pixels = ((DataBufferByte) bImageFromConvert.getRaster().getDataBuffer()).getData();
+    		
+    		//goruntu.put(0,0,pixels);
+    		
+    		int label = yuz.kulIdAl();
+    		
+    		goruntuler.put(sayac, goruntu);
+    		labelsBuf.put(sayac, label);
+    		sayac++;
+    	}
     	
         /*
         for (File image : imageFiles) {
@@ -85,7 +115,7 @@ public class YuzTaniyici {
         FaceRecognizer faceRecognizer = createEigenFaceRecognizer();
         // FaceRecognizer faceRecognizer = createLBPHFaceRecognizer()
 
-        faceRecognizer.train(images, labels);
+        faceRecognizer.train(goruntuler, labels);
 
         int predictedLabel = faceRecognizer.predict(testImage);
 

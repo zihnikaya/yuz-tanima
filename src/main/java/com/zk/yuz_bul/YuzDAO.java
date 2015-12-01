@@ -146,8 +146,7 @@ public final class YuzDAO {
 	   }
 	}
   
-  public List<Yuz> bul() {
-	  Yuz yuz=new Yuz();
+  public List<Yuz> bul() {	  
 	  List<Yuz> yuzler = new ArrayList<Yuz>(); 
 	  try{
 	      Class.forName("com.mysql.jdbc.Driver");
@@ -160,7 +159,8 @@ public final class YuzDAO {
 	    	 int id = rs.getInt("id");
 	    	 int kulId = rs.getInt("kullanici_id");
 		     byte[] goruntu = rs.getBytes("goruntu");
-	    	 yuz.goruntuVer(goruntu);
+		     Yuz yuz=new Yuz();
+		     yuz.goruntuVer(goruntu);
 		     yuz.idVer(id);
 		     yuz.kulIdVer(kulId);
 		     yuzler.add(yuz);
