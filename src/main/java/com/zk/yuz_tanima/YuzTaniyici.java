@@ -1,14 +1,20 @@
 package com.zk.yuz_tanima;
 
+import java.awt.image.BufferedImage;
+import java.awt.image.DataBufferByte;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FilenameFilter;
+import java.nio.ByteBuffer;
 import java.nio.IntBuffer;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ListIterator;
 
+import org.bytedeco.javacpp.BytePointer;
 import org.opencv.core.CvType;
+import org.opencv.core.MatOfByte;
+import org.opencv.imgcodecs.Imgcodecs;
 
 import com.zk.kullanici.Kullanici;
 import com.zk.kullanici.KullaniciDAO;
@@ -50,7 +56,7 @@ public class YuzTaniyici {
         
     	Mat testImage = imread("src/main/resources/yuz_goruntu.jpg", CV_LOAD_IMAGE_GRAYSCALE);
         
-        MatVector images = new MatVector();
+        MatVector goruntuler = new MatVector();
 
         Mat labels = new Mat(1, CV_32SC1);
         IntBuffer labelsBuf = labels.getIntBuffer();
@@ -64,11 +70,18 @@ public class YuzTaniyici {
         ListIterator<Yuz> yuzlerIter = yuzler.listIterator();
     	int sayac=0;
     	while(yuzlerIter.hasNext()){
-        	Yuz yuz = yuzlerIter.next();
-    		System.out.println(yuz.kulIdAl().toString()+'-'+yuz.idAl().toString());
-    		Mat goruntu = new Mat(265, 265, CvType.CV_8UC1);
-    		byte[] p = yuz.goruntuAl();
-    		goruntu.put(0,0,p);
+    		Yuz yuz = yuzlerIter.next();
+    		System.out.println("to string:"+yuz.goruntuAl().toString());
+    		System.out.println("uzunluk:"+yuz.goruntuAl().length);
+    		for(int i=0; i< yuz.goruntuAl().length; i++){
+    			//System.out.print(i+":"+yuz.goruntuAl()[i]+',');
+    		}
+    		//System.out.println(yuz.kulIdAl().toString()+'-'+yuz.idAl().toString());
+    		//BufferedImage image = new BufferedImage(matrix.cols(),matrix.rows(), type);
+    		//System.out.println(goruntu);
+    		//goruntuler.put(sayac, goruntu);
+    		labelsBuf.put(sayac,yuz.kulIdAl());
+    		sayac++;
         }
     	
         /* 
@@ -88,7 +101,7 @@ public class YuzTaniyici {
         FaceRecognizer faceRecognizer = createEigenFaceRecognizer();
         // FaceRecognizer faceRecognizer = createLBPHFaceRecognizer()
 
-        faceRecognizer.train(images, labels);
+        faceRecognizer.train(goruntuler, labels);
 
         int predictedLabel = faceRecognizer.predict(testImage);
 

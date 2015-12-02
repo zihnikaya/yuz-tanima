@@ -19,7 +19,9 @@ public class ImageProcessor {
 		BufferedImage image = new BufferedImage(matrix.cols(),matrix.rows(), type);
 		final byte[] targetPixels = ((DataBufferByte) image.getRaster().getDataBuffer()).getData();
 		System.arraycopy(buffer, 0, targetPixels, 0, buffer.length);  
+		System.out.println("gör data:"+targetPixels.toString());
 		return image;
 	}
+	
 
 }
