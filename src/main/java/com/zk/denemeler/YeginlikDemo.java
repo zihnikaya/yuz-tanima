@@ -15,7 +15,7 @@ public class YeginlikDemo {
 		Mat img = imread("src/main/resources/att_faces/s1/1.pgm", CV_LOAD_IMAGE_GRAYSCALE);
 		Mat yeniImg = new Mat();
 		yeniImg.create(img.rows(),img.cols(),CV_8UC1);
-		System.out.println(img.get);
+		//System.out.println(img.get);
 	}
 
 }

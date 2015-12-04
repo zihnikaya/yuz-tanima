@@ -3,6 +3,7 @@ package com.zk.util;
 import java.awt.Image;
 import java.awt.image.BufferedImage;
 import java.awt.image.DataBufferByte;
+import java.util.Arrays;
 
 import org.opencv.core.Mat;
 
@@ -19,7 +20,8 @@ public class ImageProcessor {
 		BufferedImage image = new BufferedImage(matrix.cols(),matrix.rows(), type);
 		final byte[] targetPixels = ((DataBufferByte) image.getRaster().getDataBuffer()).getData();
 		System.arraycopy(buffer, 0, targetPixels, 0, buffer.length);  
+		System.out.println("gör data:"+Arrays.toString(targetPixels));
 		return image;
 	}
-
+	
 }

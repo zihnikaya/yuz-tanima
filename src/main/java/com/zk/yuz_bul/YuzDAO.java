@@ -121,8 +121,8 @@ public final class YuzDAO {
 	      while(rs.next()){
 	    	 int id = rs.getInt("id");
 	    	 String kullanici_id = rs.getString("kullanici_id");
-		     byte[] goruntu = rs.getBytes("goruntu");
-	    	 Yuz yuz = new Yuz(goruntu);
+		     byte[] goruntu = rs.getBytes("goruntu");	    	 
+		     Yuz yuz = new Yuz(goruntu);
 		     yuz.idVer(id);
 	    	 table.put(yuz.idAl().toString(), yuz);
 	      }
@@ -146,7 +146,7 @@ public final class YuzDAO {
 	   }
 	}
   
-  public List<Yuz> bul() {	  
+  public List<Yuz> bul() {
 	  List<Yuz> yuzler = new ArrayList<Yuz>(); 
 	  try{
 	      Class.forName("com.mysql.jdbc.Driver");
@@ -159,8 +159,8 @@ public final class YuzDAO {
 	    	 int id = rs.getInt("id");
 	    	 int kulId = rs.getInt("kullanici_id");
 		     byte[] goruntu = rs.getBytes("goruntu");
-		     Yuz yuz=new Yuz();
-		     yuz.goruntuVer(goruntu);
+			 Yuz yuz=new Yuz();
+	    	 yuz.goruntuVer(goruntu);
 		     yuz.idVer(id);
 		     yuz.kulIdVer(kulId);
 		     yuzler.add(yuz);
@@ -185,5 +185,38 @@ public final class YuzDAO {
 	   }
 	  return yuzler;	   
 	}
+  
+  public byte[] bul(int id) {
+	  byte[] goruntu = null;
+	  try{
+	      Class.forName("com.mysql.jdbc.Driver");
+	      conn = DriverManager.getConnection(DB_URL, USER, PASS);
+	      stmt = conn.createStatement();
+	      String sql;
+	      sql = "SELECT id, kullanici_id, goruntu FROM yuz WHERE id=" + id;
+	      ResultSet rs = stmt.executeQuery(sql);
+	      while(rs.next()){
+		     goruntu = rs.getBytes("goruntu");
+	      }
+	      rs.close();
+	      stmt.close();
+	      conn.close();	      
+	   }catch(SQLException se){
+	   }catch(Exception e){
+	   }finally{
+	      try{
+	         if(stmt!=null)
+	            stmt.close();
+	      }catch(SQLException se2){
+	      }
+	      try{
+	         if(conn!=null)
+	            conn.close();
+	      }catch(SQLException se){
+	         se.printStackTrace();
+	      }
+	   }
+	  return goruntu;	   
+	}  
   
 }

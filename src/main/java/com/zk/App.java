@@ -12,6 +12,9 @@ import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
+import java.awt.image.ImageObserver;
+import java.awt.image.PixelGrabber;
+import java.awt.image.PixelInterleavedSampleModel;
 import java.io.File;
 import java.io.FileInputStream;
 import javax.swing.ImageIcon;
@@ -62,6 +65,13 @@ public class App {
 	public static JLabel tamAdi = new JLabel();
 	public static JButton kaydetButton = new JButton("Kaydet");
 	public static JScrollPane yuzScrollPane;
+	public static Mat yuzGorMat;
+	public static Mat yuzGorMatGray;
+	public static BufferedImage yuzGorBuf;
+	public static BufferedImage yuzGorBufGray;
+	public static Mat yuzGorMatResize = new Mat();
+	public static BufferedImage yuzGorBufResize;
+	public static ImageProcessor imageProcessor = new ImageProcessor();
 
 	public static YuzDAO yuzDAO;
 	
@@ -246,8 +256,7 @@ public class App {
 	}			
 	
 	
-	private static void kameraAc(String[] args) {
-		ImageProcessor imageProcessor = new ImageProcessor();
+	private static void kameraAc(String[] args) {		
 		Mat webcamMatImage = new Mat();  
 		Image tempImage;  
 		VideoCapture capture = new VideoCapture(0);
@@ -287,7 +296,21 @@ public class App {
 	    if(rectCrop != null){
 	    	Mat image_roi = new Mat(image,rectCrop);
 	    	Imgcodecs.imwrite("src/main/resources/yuz_goruntu.jpg",image_roi);
-	    	System.out.println(image_roi.size());
+	    	//System.out.println(image_roi.size());
+
+	    	//System.out.println("not null");
+	    	yuzGorMat = new Mat(image,rectCrop);
+	    	yuzGorMatGray = new Mat();
+	    	Imgproc.cvtColor(yuzGorMat, yuzGorMatGray, Imgproc.COLOR_RGB2GRAY);
+	    	yuzGorBuf = imageProcessor.toBufferedImage(yuzGorMat);
+	    	yuzGorBufGray = imageProcessor.toBufferedImage(yuzGorMatGray);
+	    	//System.out.println("yuz mat rgb size:"+yuzGorMat.size());
+	    	//System.out.println("yuz mat gray size:"+yuzGorMatGray.size());
+	    	//System.out.println("yuz buf with:"+yuzGorBuf.getWidth());
+	    	//System.out.println("yuz buf height:"+yuzGorBuf.getHeight());
+	    	//System.out.println("yuz dump:"+yuzGorMat.dump());
+	    	//System.out.println("yuz dump:"+yuzGorMatGray.dump());
+	    	Imgcodecs.imwrite("src/main/resources/yuz_goruntu.jpg",yuzGorMat);
 	    }
 	    
 	}
@@ -301,19 +324,31 @@ public class App {
 	    
 		byte[] dosya = new byte[100*100];
         
+		Size boyutlar = new Size(10,10);
+		Imgproc.resize( yuzGorMatGray, yuzGorMatResize, boyutlar);  
+	    	    
+		System.out.println("yuz gör resize:"+yuzGorMatResize.size());
+		System.out.println("yuz gör resize dump:"+yuzGorMatResize.dump());
+	    
+		yuzGorBufResize = imageProcessor.toBufferedImage(yuzGorMatResize);
+		System.out.println("yuz gör resize dump:"+yuzGorBufResize.toString());
+		
+		//File dosya=null;
         try {
 	     FileInputStream fileInputStream = new FileInputStream(dosyaYolu);
-	     	fileInputStream.read(dosya);
+	     	//fileInputStream.read(dosya);
 	     	fileInputStream.close();
         } catch (Exception e) {
         	e.printStackTrace();
-        }        
+        } 
+        /*
         Yuz yuz = new Yuz();
         yuz.goruntuVer(dosya);
         //System.out.println(yuz.goruntuAl());
         yuzDAO.ekle(yuz);        
         yuzTableModel.yenile();
         yuzTableModel.fireTableDataChanged();
+        */
 	}
         
 }

@@ -10,6 +10,11 @@ import java.io.FileInputStream;
 import java.io.FilenameFilter;
 import java.io.IOException;
 import java.io.InputStream;
+import java.awt.image.BufferedImage;
+import java.awt.image.DataBufferByte;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FilenameFilter;
 import java.nio.ByteBuffer;
 import java.nio.IntBuffer;
 import java.util.ArrayList;
@@ -17,6 +22,11 @@ import java.util.List;
 import java.util.ListIterator;
 
 import javax.imageio.ImageIO;
+
+import org.bytedeco.javacpp.BytePointer;
+import org.opencv.core.CvType;
+import org.opencv.core.MatOfByte;
+import org.opencv.imgcodecs.Imgcodecs;
 
 import com.zk.kullanici.Kullanici;
 import com.zk.kullanici.KullaniciDAO;
@@ -72,33 +82,23 @@ public class YuzTaniyici {
         List<Yuz> yuzler = yuzDAO.bul();
     	ListIterator<Yuz> yuzlerIter = yuzler.listIterator();
     	
-    	int sayac = 0;
+    	int sayac=0;
     	while(yuzlerIter.hasNext()){
-        	Yuz yuz = yuzlerIter.next();
-    		System.out.println(yuz.kulIdAl().toString() + '-' + yuz.idAl().toString());
-    		Mat goruntu = new Mat(265, 265, CV_8UC3);
-
-    		InputStream in = new ByteArrayInputStream(yuz.goruntuAl());
-    		BufferedImage bImageFromConvert=null;
-			try {
-				bImageFromConvert = ImageIO.read(in);
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-    		
-    		byte[] pixels = ((DataBufferByte) bImageFromConvert.getRaster().getDataBuffer()).getData();
-    		
-    		//goruntu.put(0,0,pixels);
-    		
-    		int label = yuz.kulIdAl();
-    		
-    		goruntuler.put(sayac, goruntu);
-    		labelsBuf.put(sayac, label);
+    		Yuz yuz = yuzlerIter.next();
+    		System.out.println("to string:"+yuz.goruntuAl().toString());
+    		System.out.println("uzunluk:"+yuz.goruntuAl().length);
+    		for(int i=0; i< yuz.goruntuAl().length; i++){
+    			//System.out.print(i+":"+yuz.goruntuAl()[i]+',');
+    		}
+    		//System.out.println(yuz.kulIdAl().toString()+'-'+yuz.idAl().toString());
+    		//BufferedImage image = new BufferedImage(matrix.cols(),matrix.rows(), type);
+    		//System.out.println(goruntu);
+    		//goruntuler.put(sayac, goruntu);
+    		labelsBuf.put(sayac,yuz.kulIdAl());
     		sayac++;
-    	}
+        }
     	
-        /*
+        /* 
         for (File image : imageFiles) {
             Mat img = imread(image.getAbsolutePath(), CV_LOAD_IMAGE_GRAYSCALE);
 
