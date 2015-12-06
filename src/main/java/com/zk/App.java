@@ -15,8 +15,12 @@ import java.awt.image.BufferedImage;
 import java.awt.image.ImageObserver;
 import java.awt.image.PixelGrabber;
 import java.awt.image.PixelInterleavedSampleModel;
+import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.FileInputStream;
+import java.util.Arrays;
+
+import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JDialog;
@@ -65,12 +69,14 @@ public class App {
 	public static JLabel tamAdi = new JLabel();
 	public static JButton kaydetButton = new JButton("Kaydet");
 	public static JScrollPane yuzScrollPane;
-	public static Mat yuzGorMat;
-	public static Mat yuzGorMatGray;
-	public static BufferedImage yuzGorBuf;
-	public static BufferedImage yuzGorBufGray;
-	public static Mat yuzGorMatResize = new Mat();
-	public static BufferedImage yuzGorBufResize;
+	public static Mat yuzMat;
+	public static Mat yuzMatGray;
+	public static byte[] yuzByte;
+	public static byte[] yuzByteGray;
+	public static BufferedImage yuzBuf;
+	public static BufferedImage yuzBufGray;
+	public static Mat yuzMatResize = new Mat();
+	public static BufferedImage yuzBufResize;
 	public static ImageProcessor imageProcessor = new ImageProcessor();
 
 	public static YuzDAO yuzDAO;
@@ -144,7 +150,7 @@ public class App {
 		
 		kaydetButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent event) {
-				goruntuKaydet();
+				yuzKaydet();
 			}
 		});
 				
@@ -163,19 +169,19 @@ public class App {
 	
 	public static void kulYuzleriGoster() {			
 		try{
-			System.out.println("kul id:"+kullanici);
+			//System.out.println("kul id:"+kullanici);
 			yuzDAO = new YuzDAO(kullanici);
 			yuzTableModel = new YuzTableModel(kullanici);
 			yuzTable = new JTable(yuzTableModel);
 			yuzTable.setBackground(Color.LIGHT_GRAY);
 			yuzTable.getColumnModel().getColumn(0).setPreferredWidth(20);
-			yuzTable.getColumnModel().getColumn(1).setPreferredWidth(274);
-			yuzTable.setRowHeight(279);
+			yuzTable.getColumnModel().getColumn(1).setPreferredWidth(100);
+			yuzTable.setRowHeight(100);
 			yuzTable.setFillsViewportHeight(true);
 			yuzTable.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 			yuzScrollPane = new JScrollPane();
 			yuzScrollPane.getViewport().add(yuzTable);
-			yuzScrollPane.setPreferredSize(new Dimension(330, 480));
+			yuzScrollPane.setPreferredSize(new Dimension(140, 480));
 			GridBagConstraints c = new GridBagConstraints();
 			c.gridx = 1;
 			c.gridy = 0;
@@ -183,8 +189,11 @@ public class App {
 			
 			yuzTable.getSelectionModel().addListSelectionListener(new ListSelectionListener(){
 		        public void valueChanged(ListSelectionEvent event) {
+		            if ( event.getValueIsAdjusting() ){
+		                return;
+		             }
 		            secilenGoruntuId = (int) (yuzTable.getValueAt(yuzTable.getSelectedRow(), 0));
-		            System.out.println(secilenGoruntuId);
+		            System.out.println("yuz id:"+secilenGoruntuId);
 		        }
 		    });			
 			
@@ -197,7 +206,7 @@ public class App {
 		JButton silButton = new JButton("Sil");
 		silButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent event) {
-				goruntuSil();
+				yuzSil();
 			}
 		});
 		silButton.setAlignmentX(Component.RIGHT_ALIGNMENT);		
@@ -215,7 +224,6 @@ public class App {
 		JPanel buttonsPanel = new JPanel(gridRowLayout);
 
 		buttonsPanel.add(silButton);
-		//buttonsPanel.add(ogretButton);	
 		
 		GridBagConstraints c = new GridBagConstraints();
 
@@ -224,13 +232,14 @@ public class App {
 		dialog.add(buttonsPanel,c);
 	}			
 	
-	private static void goruntuSil(){
+	private static void yuzSil(){
 		Yuz yuz = new Yuz();
 		yuz.idVer(secilenGoruntuId);
 		yuzDAO.sil(yuz);
-        yuzTableModel.yenile();
-        //yuzTableModel.fireTableDataChanged();
+		
         yuzTableModel.fireTableRowsDeleted(secilenGoruntuId, secilenGoruntuId);
+        yuzTableModel.yenile();
+        yuzTableModel.fireTableDataChanged();
 	}	
 	
 	public static void taniButtonuGoster() {			
@@ -294,61 +303,30 @@ public class App {
 	    }
 	    
 	    if(rectCrop != null){
-	    	Mat image_roi = new Mat(image,rectCrop);
-	    	Imgcodecs.imwrite("src/main/resources/yuz_goruntu.jpg",image_roi);
-	    	//System.out.println(image_roi.size());
-
-	    	//System.out.println("not null");
-	    	yuzGorMat = new Mat(image,rectCrop);
-	    	yuzGorMatGray = new Mat();
-	    	Imgproc.cvtColor(yuzGorMat, yuzGorMatGray, Imgproc.COLOR_RGB2GRAY);
-	    	yuzGorBuf = imageProcessor.toBufferedImage(yuzGorMat);
-	    	yuzGorBufGray = imageProcessor.toBufferedImage(yuzGorMatGray);
-	    	//System.out.println("yuz mat rgb size:"+yuzGorMat.size());
-	    	//System.out.println("yuz mat gray size:"+yuzGorMatGray.size());
-	    	//System.out.println("yuz buf with:"+yuzGorBuf.getWidth());
-	    	//System.out.println("yuz buf height:"+yuzGorBuf.getHeight());
-	    	//System.out.println("yuz dump:"+yuzGorMat.dump());
-	    	//System.out.println("yuz dump:"+yuzGorMatGray.dump());
-	    	Imgcodecs.imwrite("src/main/resources/yuz_goruntu.jpg",yuzGorMat);
+	    	yuzMat = new Mat(image,rectCrop);
 	    }
 	    
 	}
 	
-	private static void goruntuKaydet(){
-		File dosyaYolu = new File("src/main/resources/yuz_goruntu.jpg");
+	private static void yuzKaydet(){
+    	yuzMatResize = new Mat();
+		Size boyutlar = new Size(100,100);
+		Imgproc.resize( yuzMat, yuzMatResize, boyutlar);  	    
+		yuzBufResize = imageProcessor.toBufferedImage(yuzMatResize);
 		
-		Toolkit toolkit = Toolkit.getDefaultToolkit(); 
-	    Image goruntu = toolkit.getImage(dosyaYolu.getPath());
-	    goruntu.getScaledInstance(100, 100, Image.SCALE_DEFAULT); 
-	    
-		byte[] dosya = new byte[100*100];
-        
-		Size boyutlar = new Size(10,10);
-		Imgproc.resize( yuzGorMatGray, yuzGorMatResize, boyutlar);  
-	    	    
-		System.out.println("yuz gör resize:"+yuzGorMatResize.size());
-		System.out.println("yuz gör resize dump:"+yuzGorMatResize.dump());
-	    
-		yuzGorBufResize = imageProcessor.toBufferedImage(yuzGorMatResize);
-		System.out.println("yuz gör resize dump:"+yuzGorBufResize.toString());
-		
-		//File dosya=null;
-        try {
-	     FileInputStream fileInputStream = new FileInputStream(dosyaYolu);
-	     	//fileInputStream.read(dosya);
-	     	fileInputStream.close();
-        } catch (Exception e) {
-        	e.printStackTrace();
-        } 
-        /*
+    	yuzMatGray = new Mat();
+    	Imgproc.cvtColor(yuzMatResize, yuzMatGray, Imgproc.COLOR_RGB2GRAY);
+    	
+    	MatOfByte matOfByte = new MatOfByte();
+    	Imgcodecs.imencode(".jpg", yuzMatGray, matOfByte);
+    	
         Yuz yuz = new Yuz();
-        yuz.goruntuVer(dosya);
-        //System.out.println(yuz.goruntuAl());
+        yuz.goruntuVer(matOfByte.toArray());
+        //System.out.println("byte:"+Arrays.toString(yuz.goruntuAl()));
+        
         yuzDAO.ekle(yuz);        
         yuzTableModel.yenile();
-        yuzTableModel.fireTableDataChanged();
-        */
+        yuzTableModel.fireTableDataChanged();        
 	}
         
 }

@@ -23,7 +23,7 @@ public final class YuzDAO {
    static final String DB_URL = "jdbc:mysql://localhost/yuz_tanima";
 
    static final String USER = "root";
-   static final String PASS = "";
+   static final String PASS = "kaya";
 
    Connection conn = null;
    Statement stmt = null;   
@@ -90,7 +90,7 @@ public final class YuzDAO {
 	      PreparedStatement pstmt = conn.prepareStatement("DELETE FROM yuz WHERE id=?");
 	      pstmt.setInt(1, yuz.idAl());
 	      pstmt.executeUpdate();
-	      table.clear();
+	      //table.clear();
 	   }catch(SQLException se){
 	      se.printStackTrace();
 	   }catch(Exception e){

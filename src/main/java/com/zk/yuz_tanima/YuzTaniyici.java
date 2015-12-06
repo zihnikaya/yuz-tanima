@@ -18,14 +18,15 @@ import java.io.FilenameFilter;
 import java.nio.ByteBuffer;
 import java.nio.IntBuffer;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.ListIterator;
-
+import com.zk.util.ImageProcessor;
 import javax.imageio.ImageIO;
 
 import org.bytedeco.javacpp.BytePointer;
 import org.opencv.core.CvType;
-import org.opencv.core.MatOfByte;
+import org.opencv.core.Size;
 import org.opencv.imgcodecs.Imgcodecs;
 
 import com.zk.kullanici.Kullanici;
@@ -70,7 +71,7 @@ public class YuzTaniyici {
         
         MatVector goruntuler = new MatVector();
 
-        Mat labels = new Mat(1, CV_32SC1);
+        Mat labels = new Mat(1,1,CV_32SC1);
         System.out.println("labels:"+labels);
         IntBuffer labelsBuf = labels.getIntBuffer();
 
@@ -87,13 +88,20 @@ public class YuzTaniyici {
     		Yuz yuz = yuzlerIter.next();
     		System.out.println("to string:"+yuz.goruntuAl().toString());
     		System.out.println("uzunluk:"+yuz.goruntuAl().length);
-    		for(int i=0; i< yuz.goruntuAl().length; i++){
-    			//System.out.print(i+":"+yuz.goruntuAl()[i]+',');
-    		}
-    		//System.out.println(yuz.kulIdAl().toString()+'-'+yuz.idAl().toString());
-    		//BufferedImage image = new BufferedImage(matrix.cols(),matrix.rows(), type);
-    		//System.out.println(goruntu);
-    		//goruntuler.put(sayac, goruntu);
+
+    		byte[] imgBlob = yuz.goruntuAl();
+    		BufferedImage bufImg = ImageProcessor.toBufferedImg(yuz.goruntuAl());
+    		
+    		Mat imgMat = imdecode(bufImg);
+            imgMat.put(bufImg);
+            //System.out.println("Mat:" + imgMat.dump());
+            
+            Mat decImg = imdecode(imgMat, Imgcodecs.CV_LOAD_IMAGE_GRAYSCALE);    		
+            
+            //System.out.println("Mat:" + decImg.dump());
+            System.out.println("Mat size:" + decImg.size());
+    		
+    		goruntuler.put(sayac, m);
     		labelsBuf.put(sayac,yuz.kulIdAl());
     		sayac++;
         }

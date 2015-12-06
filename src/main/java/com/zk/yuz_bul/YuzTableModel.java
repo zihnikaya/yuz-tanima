@@ -1,11 +1,13 @@
 package com.zk.yuz_bul;
 
+import java.util.Arrays;
 import java.util.List;
 
 import javax.swing.ImageIcon;
 import javax.swing.table.AbstractTableModel;
 
 import com.zk.kullanici.Kullanici;
+import com.zk.util.ImageProcessor;
 
 public final class YuzTableModel extends AbstractTableModel {
   
@@ -16,15 +18,13 @@ public final class YuzTableModel extends AbstractTableModel {
 
   public YuzTableModel(Kullanici kullanici){
     this.kullanici= kullanici;
-	//System.out.println(kullanici);
     DAO = new YuzDAO(kullanici);
     yuzler = DAO.list();
-    //System.out.println(yuzler.toString());    
   }
 
   public void yenile() {
 	yuzler = DAO.list();
-	fireTableDataChanged();
+	//fireTableDataChanged();
   }
   
   @Override public int getColumnCount() {
@@ -42,7 +42,7 @@ public final class YuzTableModel extends AbstractTableModel {
       result = yuz.idAl();
     }
     else if(aCol == 1) {
-    	result = new ImageIcon(yuz.goruntuAl());
+    	result = new ImageIcon(ImageProcessor.toBufferedImg(yuz.goruntuAl()));
     }
     return result;
   }
