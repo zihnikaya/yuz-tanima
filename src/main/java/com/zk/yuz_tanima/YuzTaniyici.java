@@ -26,6 +26,7 @@ import javax.imageio.ImageIO;
 
 import org.bytedeco.javacpp.BytePointer;
 import org.opencv.core.CvType;
+import org.opencv.core.MatOfByte;
 import org.opencv.core.Size;
 import org.opencv.imgcodecs.Imgcodecs;
 
@@ -67,11 +68,11 @@ import static org.bytedeco.javacpp.opencv_imgcodecs.*;
 public class YuzTaniyici {
     public static void tani() {
         
-    	Mat testImage = imread("src/main/resources/yuz_goruntu.jpg", CV_LOAD_IMAGE_GRAYSCALE);
+    	Mat testImage = imread("src/main/resources/zk_yuz.jpg", CV_LOAD_IMAGE_GRAYSCALE);
         
         MatVector goruntuler = new MatVector();
 
-        Mat labels = new Mat(1,1,CV_32SC1);
+        Mat labels = new Mat(15,1,CV_32SC1);
         System.out.println("labels:"+labels);
         IntBuffer labelsBuf = labels.getIntBuffer();
 
@@ -86,23 +87,13 @@ public class YuzTaniyici {
     	int sayac=0;
     	while(yuzlerIter.hasNext()){
     		Yuz yuz = yuzlerIter.next();
-    		System.out.println("to string:"+yuz.goruntuAl().toString());
-    		System.out.println("uzunluk:"+yuz.goruntuAl().length);
-
-    		byte[] imgBlob = yuz.goruntuAl();
-    		BufferedImage bufImg = ImageProcessor.toBufferedImg(yuz.goruntuAl());
+    		Mat img = new Mat(yuz.goruntuAl());
     		
-    		Mat imgMat = imdecode(bufImg);
-            imgMat.put(bufImg);
-            //System.out.println("Mat:" + imgMat.dump());
-            
-            Mat decImg = imdecode(imgMat, Imgcodecs.CV_LOAD_IMAGE_GRAYSCALE);    		
-            
-            //System.out.println("Mat:" + decImg.dump());
-            System.out.println("Mat size:" + decImg.size());
+    		Mat mat = new Mat();
+            mat.put(img);
     		
-    		goruntuler.put(sayac, m);
-    		labelsBuf.put(sayac,yuz.kulIdAl());
+    		goruntuler.put(sayac, mat);
+    		labelsBuf.put(sayac, yuz.kulIdAl());
     		sayac++;
         }
     	

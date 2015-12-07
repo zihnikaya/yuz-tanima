@@ -26,7 +26,7 @@ public final class KullaniciDAO {
    static final String DB_URL = "jdbc:mysql://localhost/yuz_tanima?useUnicode=true&characterEncoding=UTF-8";
 
    static final String USER = "root";
-   static final String PASS = "kaya";
+   static final String PASS = "";
 
    Connection conn = null;
    Statement stmt = null;   

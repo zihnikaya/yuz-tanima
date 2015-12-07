@@ -89,11 +89,11 @@ public class App {
 	public static void main(String[] args) {
 		kullaniciGirisi();
 		GUIYuzBulma();
-		loadCascade();
-		kameraAc(args);
+		cascadeYukle();
+		kamCalistir(args);
 	}
 	
-	private static void loadCascade() {
+	private static void cascadeYukle() {
 		String cascadePath = "src/main/resources/cascades/haarcascade_frontalface_alt.xml";
 	    faceDetector = new CascadeClassifier(cascadePath);
 	}	
@@ -169,7 +169,6 @@ public class App {
 	
 	public static void kulYuzleriGoster() {			
 		try{
-			//System.out.println("kul id:"+kullanici);
 			yuzDAO = new YuzDAO(kullanici);
 			yuzTableModel = new YuzTableModel(kullanici);
 			yuzTable = new JTable(yuzTableModel);
@@ -265,7 +264,7 @@ public class App {
 	}			
 	
 	
-	private static void kameraAc(String[] args) {		
+	private static void kamCalistir(String[] args) {		
 		Mat webcamMatImage = new Mat();  
 		Image tempImage;  
 		VideoCapture capture = new VideoCapture(0);
@@ -277,18 +276,18 @@ public class App {
 				if( !webcamMatImage.empty() ){  
 					yuzBul(webcamMatImage);
 					tempImage= imageProcessor.toBufferedImage(webcamMatImage);					
-					ImageIcon imageIcon = new ImageIcon(tempImage, "Captured video");
+					ImageIcon imageIcon = new ImageIcon(tempImage, "Alınan görüntü");
 					imageView.setIcon(imageIcon);
 					dialog.pack();  
 				}  
 				else{  
-					System.out.println("-- Frame not captured -- Break!"); 
+					System.out.println("Görüntü alınamadı!"); 
 					break;  
 				}
 			}  
 		}
 		else{
-			System.out.println("Couldn't open capture.");
+			System.out.println("Görüntü yakalama açılamadı!");
 		}		
 	}
 	
@@ -322,7 +321,6 @@ public class App {
     	
         Yuz yuz = new Yuz();
         yuz.goruntuVer(matOfByte.toArray());
-        //System.out.println("byte:"+Arrays.toString(yuz.goruntuAl()));
         
         yuzDAO.ekle(yuz);        
         yuzTableModel.yenile();

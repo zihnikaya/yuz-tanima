@@ -9,7 +9,6 @@ import java.util.Arrays;
 import javax.imageio.ImageIO;
 
 import org.opencv.core.Core;
-import org.opencv.core.CvType;
 import org.opencv.core.Mat;
 import org.opencv.core.Size;
 import org.opencv.imgcodecs.Imgcodecs;
@@ -45,21 +44,9 @@ public class BufImg {
 
 	public static void main(String[] args) throws InvalidInputException {
         YuzDAO yuzDAO = new YuzDAO();
-        byte[] imgBlob  = yuzDAO.bul(48);
+        byte[] imgBlob  = yuzDAO.bul(36);
         System.out.println("Blob:" + Arrays.toString(imgBlob));
-        
-        
-        
-        Size boyutlar = new Size(100,100);
-        Mat imgMat = new Mat(boyutlar,CvType.CV_8SC1);
-        imgMat.put(0, 0, imgBlob);
-        System.out.println("Mat:" + imgMat.dump());
-        
-        Mat decImg = Imgcodecs.imdecode(imgMat, Imgcodecs.CV_LOAD_IMAGE_GRAYSCALE);
-        System.out.println("Mat:" + decImg.dump());
-        System.out.println("Mat size:" + decImg.size());
-        
-        /*
+        Mat img = Imgproc.imdecode(data);
 		Mat imgRgb  = new Mat();
 		Mat imgRgb1 = new Mat();
         Size boyutlar = new Size(10,10);
