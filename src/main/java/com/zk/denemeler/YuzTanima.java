@@ -3,7 +3,6 @@ package com.zk.denemeler;
 import static org.bytedeco.javacpp.opencv_core.*;
 import static org.bytedeco.javacpp.opencv_face.*;
 import static org.bytedeco.javacpp.opencv_imgcodecs.*;
-import static org.bytedeco.javacpp.opencv_imgcodecs.*;
 
 import java.nio.IntBuffer;
 import java.util.Arrays;
@@ -13,7 +12,6 @@ import java.util.ListIterator;
 import org.bytedeco.javacpp.opencv_core.Mat;
 import org.bytedeco.javacpp.opencv_core.MatVector;
 import org.bytedeco.javacpp.opencv_face.FaceRecognizer;
-import org.opencv.core.MatOfInt;
 
 import com.zk.kullanici.Kullanici;
 import com.zk.kullanici.KullaniciDAO;
@@ -24,12 +22,7 @@ public class YuzTanima {
 
 	public static void main(String[] args) {
     	Mat testImage = imread("src/main/resources/zk_yuz.jpg", CV_LOAD_IMAGE_GRAYSCALE);
-        
-        MatVector goruntuler = new MatVector();
-
-        Mat labels = new Mat(15,1,CV_32SC1);
-        System.out.println("labels:"+labels);
-        IntBuffer labelsBuf = labels.getIntBuffer();
+        System.out.println(testImage.arraySize());
         
         KullaniciDAO kulDAO = new KullaniciDAO();
         List<Kullanici> kullar = kulDAO.bul();
@@ -39,21 +32,15 @@ public class YuzTanima {
         List<Yuz> yuzler = yuzDAO.bul();
     	ListIterator<Yuz> yuzlerIter = yuzler.listIterator();
     	
+        MatVector goruntuler = new MatVector(yuzDAO.topYuz());
+
+        Mat labels = new Mat(yuzDAO.topYuz(),1,CV_32SC1);
+        IntBuffer labelsBuf = labels.getIntBuffer();
+        
     	int sayac=0;
     	while(yuzlerIter.hasNext()){
     		Yuz yuz = yuzlerIter.next();
-    		
-    		System.out.println(Arrays.toString(yuz.goruntuAl()));
-    		System.out.println(yuz.goruntuAl().length);
-    		
-    		Mat img = new Mat(yuz.goruntuAl());
-    		
-    		Mat matDec = new Mat();
-    		imdecode(new MatOfInt(yuz.goruntuAl()), 0, matDec);
-    		
-    		Mat mat = new Mat();
-            mat.put(img);
-    		
+    		Mat mat = imdecode(new Mat(yuz.goruntuAl()), CV_LOAD_IMAGE_UNCHANGED);
     		goruntuler.put(sayac, mat);
     		labelsBuf.put(sayac, yuz.kulIdAl());
     		sayac++;

@@ -24,12 +24,8 @@ import java.util.ListIterator;
 import com.zk.util.ImageProcessor;
 import javax.imageio.ImageIO;
 
-import org.bytedeco.javacpp.BytePointer;
-import org.opencv.core.CvType;
-import org.opencv.core.MatOfByte;
-import org.opencv.core.Size;
-import org.opencv.imgcodecs.Imgcodecs;
 
+import com.zk.App;
 import com.zk.kullanici.Kullanici;
 import com.zk.kullanici.KullaniciDAO;
 import com.zk.yuz_bul.Yuz;
@@ -38,86 +34,40 @@ import com.zk.yuz_bul.YuzDAO;
 import static org.bytedeco.javacpp.opencv_face.*;
 import static org.bytedeco.javacpp.opencv_core.*;
 import static org.bytedeco.javacpp.opencv_imgcodecs.*;
+import static org.bytedeco.javacpp.opencv_imgproc.*;
 
-/**
- * I couldn't find any tutorial on how to perform face recognition using OpenCV and Java,
- * so I decided to share a viable solution here. The solution is very inefficient in its
- * current form as the training model is built at each run, however it shows what's needed
- * to make it work.
- *
- * The class below takes two arguments: The path to the directory containing the training
- * faces and the path to the image you want to classify. Not that all images has to be of
- * the same size and that the faces already has to be cropped out of their original images
- * (Take a look here http://fivedots.coe.psu.ac.th/~ad/jg/nui07/index.html if you haven't
- * done the face detection yet).
- *
- * For the simplicity of this post, the class also requires that the training images have
- * filename format: <label>-rest_of_filename.png. For example:
- *
- * 1-jon_doe_1.png
- * 1-jon_doe_2.png
- * 2-jane_doe_1.png
- * 2-jane_doe_2.png
- * ...and so on.
- *
- * Source: http://pcbje.com/2012/12/doing-face-recognition-with-javacv/
- *
- * @author Petter Chris
- * tian Bjelland
- */
 public class YuzTaniyici {
     public static void tani() {
+    	Mat testYuz = imdecode(new Mat(App.matOfByteArr), CV_LOAD_IMAGE_UNCHANGED);
         
-    	Mat testImage = imread("src/main/resources/zk_yuz.jpg", CV_LOAD_IMAGE_GRAYSCALE);
-        
-        MatVector goruntuler = new MatVector();
-
-        Mat labels = new Mat(15,1,CV_32SC1);
-        System.out.println("labels:"+labels);
-        IntBuffer labelsBuf = labels.getIntBuffer();
-
         KullaniciDAO kulDAO = new KullaniciDAO();
         List<Kullanici> kullar = kulDAO.bul();
         ListIterator<Kullanici> kulIter = kullar.listIterator();
-        YuzDAO yuzDAO = new YuzDAO(kulIter.next());
         
+        YuzDAO yuzDAO = new YuzDAO(kulIter.next());        
         List<Yuz> yuzler = yuzDAO.bul();
     	ListIterator<Yuz> yuzlerIter = yuzler.listIterator();
+    	
+        MatVector goruntuler = new MatVector(yuzDAO.topYuz());
+
+        Mat labels = new Mat(yuzDAO.topYuz(),1,CV_32SC1);
+        IntBuffer labelsBuf = labels.getIntBuffer();
     	
     	int sayac=0;
     	while(yuzlerIter.hasNext()){
     		Yuz yuz = yuzlerIter.next();
-    		Mat img = new Mat(yuz.goruntuAl());
-    		
-    		Mat mat = new Mat();
-            mat.put(img);
-    		
+    		Mat mat = imdecode(new Mat(yuz.goruntuAl()), CV_LOAD_IMAGE_UNCHANGED);
     		goruntuler.put(sayac, mat);
     		labelsBuf.put(sayac, yuz.kulIdAl());
     		sayac++;
         }
     	
-        /* 
-        for (File image : imageFiles) {
-            Mat img = imread(image.getAbsolutePath(), CV_LOAD_IMAGE_GRAYSCALE);
-
-            int label = Integer.parseInt(image.getName().split("\\-")[0]);
-
-            images.put(counter, img);
-
-            labelsBuf.put(counter, label);
-
-            counter++;
-        }
-	    */
-        //FaceRecognizer faceRecognizer = createFisherFaceRecognizer();
         FaceRecognizer faceRecognizer = createEigenFaceRecognizer();
-        // FaceRecognizer faceRecognizer = createLBPHFaceRecognizer()
-
         faceRecognizer.train(goruntuler, labels);
-
-        int predictedLabel = faceRecognizer.predict(testImage);
-
-        System.out.println("Predicted label: " + predictedLabel);
+        int predictedLabel = faceRecognizer.predict(testYuz);
+        
+        Kullanici kul = kulDAO.idDenBul(predictedLabel);
+        App.tanimaSonucu.setText("Merhaba "+kul.adAl()+" "+kul.soyadAl());
+        System.out.println("Predicted label: " + kul.adAl()+" "+kul.soyadAl());   
     }
 }

@@ -217,6 +217,39 @@ public final class YuzDAO {
 	      }
 	   }
 	  return goruntu;	   
+	} 
+  
+  public int topYuz() {
+	  int toplam=0;
+	  try{
+	      Class.forName("com.mysql.jdbc.Driver");
+	      conn = DriverManager.getConnection(DB_URL, USER, PASS);
+	      stmt = conn.createStatement();
+	      String sql;
+	      sql = "SELECT COUNT(*) FROM yuz";
+	      ResultSet rs = stmt.executeQuery(sql);
+	      while(rs.next()){
+	    	  toplam = rs.getInt(1);
+	      }
+	      rs.close();
+	      stmt.close();
+	      conn.close();	      
+	   }catch(SQLException se){
+	   }catch(Exception e){
+	   }finally{
+	      try{
+	         if(stmt!=null)
+	            stmt.close();
+	      }catch(SQLException se2){
+	      }
+	      try{
+	         if(conn!=null)
+	            conn.close();
+	      }catch(SQLException se){
+	         se.printStackTrace();
+	      }
+	   }
+	  return toplam;	   
 	}  
   
 }

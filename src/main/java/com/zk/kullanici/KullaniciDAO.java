@@ -219,6 +219,45 @@ public final class KullaniciDAO {
 	         se.printStackTrace();
 	      }
 	   }
+	} 
+  
+  public Kullanici idDenBul(int id) {
+	  Kullanici kullanici=null; 
+	  try{
+	      Class.forName("com.mysql.jdbc.Driver");
+	      conn = DriverManager.getConnection(DB_URL, USER, PASS);
+	      stmt = conn.createStatement();
+	      String sql;
+	      sql = "SELECT id, ogrenci_no, ad, soyad, bolum FROM kullanici WHERE id='"+id+"'";
+	      ResultSet rs = stmt.executeQuery(sql);
+	      rs.next();
+	      String kulId = rs.getString("id");
+	      String ogrNo = rs.getString("ogrenci_no");
+	      String ad = rs.getString("ad");
+	      String soyad = rs.getString("soyad");
+	      String bolum = rs.getString("bolum");
+	      kullanici = new Kullanici(kulId, ogrNo, ad, soyad, bolum);
+	      rs.close();
+	      stmt.close();
+	      conn.close();
+	   }catch(SQLException se){
+	      se.printStackTrace();
+	   }catch(Exception e){
+	      e.printStackTrace();
+	   }finally{
+	      try{
+	         if(stmt!=null)
+	            stmt.close();
+	      }catch(SQLException se2){
+	      }
+	      try{
+	         if(conn!=null)
+	            conn.close();
+	      }catch(SQLException se){
+	         se.printStackTrace();
+	      }
+	   }
+	   return kullanici;
 	}  
     
   public void bul(String ogrNo) {
@@ -256,7 +295,9 @@ public final class KullaniciDAO {
 	         se.printStackTrace();
 	      }
 	   }
-	}    
+	}   
+  
+  
   
   private void appendTo(StringBuilder aText, Object aField, String aAppend) {
     if (Util.textAra(Util.format(aField))) {

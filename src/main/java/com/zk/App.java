@@ -30,6 +30,7 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
+import javax.swing.SwingConstants;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.text.JTextComponent;
@@ -77,7 +78,9 @@ public class App {
 	public static BufferedImage yuzBufGray;
 	public static Mat yuzMatResize = new Mat();
 	public static BufferedImage yuzBufResize;
+	public static byte[] matOfByteArr;
 	public static ImageProcessor imageProcessor = new ImageProcessor();
+	public static JLabel tanimaSonucu;
 
 	public static YuzDAO yuzDAO;
 	
@@ -253,8 +256,8 @@ public class App {
 		gridRowLayout.setVgap(5);
 		JPanel buttonsPanel = new JPanel(gridRowLayout);
 		buttonsPanel.add(taniButton);
-		JLabel tanimaSonucu = new JLabel("");
-		tanimaSonucu.setPreferredSize(new Dimension(100, 5));
+		tanimaSonucu = new JLabel("",SwingConstants.CENTER);
+		tanimaSonucu.setPreferredSize(new Dimension(200, 5));
 		buttonsPanel.add(tanimaSonucu);
 		buttonsPanel.add(taniButton);
 		GridBagConstraints c = new GridBagConstraints();
@@ -279,6 +282,7 @@ public class App {
 					ImageIcon imageIcon = new ImageIcon(tempImage, "Alınan görüntü");
 					imageView.setIcon(imageIcon);
 					dialog.pack();  
+					//break;
 				}  
 				else{  
 					System.out.println("Görüntü alınamadı!"); 
@@ -302,25 +306,24 @@ public class App {
 	    }
 	    
 	    if(rectCrop != null){
-	    	yuzMat = new Mat(image,rectCrop);
+	    	yuzMat = new Mat(image,rectCrop);	
+	    	yuzMatResize = new Mat();
+			Size boyutlar = new Size(100,100);
+			Imgproc.resize( yuzMat, yuzMatResize, boyutlar);  	    
+			yuzBufResize = imageProcessor.toBufferedImage(yuzMatResize);
+			
+	    	yuzMatGray = new Mat();
+	    	Imgproc.cvtColor(yuzMatResize, yuzMatGray, Imgproc.COLOR_RGB2GRAY);	 
+	    	MatOfByte matOfByte = new MatOfByte();   	
+	    	Imgcodecs.imencode(".jpg", yuzMatGray, matOfByte);
+	    	matOfByteArr = matOfByte.toArray();
 	    }
 	    
 	}
 	
-	private static void yuzKaydet(){
-    	yuzMatResize = new Mat();
-		Size boyutlar = new Size(100,100);
-		Imgproc.resize( yuzMat, yuzMatResize, boyutlar);  	    
-		yuzBufResize = imageProcessor.toBufferedImage(yuzMatResize);
-		
-    	yuzMatGray = new Mat();
-    	Imgproc.cvtColor(yuzMatResize, yuzMatGray, Imgproc.COLOR_RGB2GRAY);
-    	
-    	MatOfByte matOfByte = new MatOfByte();
-    	Imgcodecs.imencode(".jpg", yuzMatGray, matOfByte);
-    	
+	private static void yuzKaydet(){    		
         Yuz yuz = new Yuz();
-        yuz.goruntuVer(matOfByte.toArray());
+        yuz.goruntuVer(matOfByteArr);
         
         yuzDAO.ekle(yuz);        
         yuzTableModel.yenile();
