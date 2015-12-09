@@ -81,6 +81,8 @@ public class App {
 	public static byte[] matOfByteArr;
 	public static ImageProcessor imageProcessor = new ImageProcessor();
 	public static JLabel tanimaSonucu;
+	public static JButton sinGirBut;
+	public static JButton taniBut;
 
 	public static YuzDAO yuzDAO;
 	
@@ -245,26 +247,44 @@ public class App {
 	}	
 	
 	public static void taniButtonuGoster() {			
-		JButton taniButton = new JButton("Giriş");
-		taniButton.addActionListener(new ActionListener() {
+		taniBut = new JButton("Yüz Tanı");
+		taniBut.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent event) {
 				YuzTaniyici.tani();
 			}
 		});
-		taniButton.setAlignmentX(Component.CENTER_ALIGNMENT);		
+		taniBut.setAlignmentX(Component.CENTER_ALIGNMENT);		
 		GridLayout gridRowLayout = new GridLayout(3,0);
-		gridRowLayout.setVgap(5);
+		//gridRowLayout.setVgap(5);
 		JPanel buttonsPanel = new JPanel(gridRowLayout);
-		buttonsPanel.add(taniButton);
+		buttonsPanel.add(taniBut);
 		tanimaSonucu = new JLabel("",SwingConstants.CENTER);
 		tanimaSonucu.setPreferredSize(new Dimension(200, 5));
 		buttonsPanel.add(tanimaSonucu);
-		buttonsPanel.add(taniButton);
+		buttonsPanel.add(taniBut);
 		GridBagConstraints c = new GridBagConstraints();
 		c.gridx = 0;
 		c.gridy = 1;
 		dialog.add(buttonsPanel,c);
-	}			
+	}	
+	
+	public static void sinGirButGoster() {			
+		sinGirBut = new JButton("Sınava Başla");
+		sinGirBut.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent event) {
+				//YuzTaniyici.tani();
+			}
+		});
+		sinGirBut.setAlignmentX(Component.CENTER_ALIGNMENT);		
+		GridLayout gridRowLayout = new GridLayout(3,0);
+		//gridRowLayout.setVgap(5);
+		JPanel buttonsPanel = new JPanel(gridRowLayout);
+		buttonsPanel.add(sinGirBut);
+		GridBagConstraints c = new GridBagConstraints();
+		c.gridx = 0;
+		c.gridy = 2;
+		dialog.add(buttonsPanel,c);
+	}	
 	
 	
 	private static void kamCalistir(String[] args) {		
@@ -314,6 +334,7 @@ public class App {
 			
 	    	yuzMatGray = new Mat();
 	    	Imgproc.cvtColor(yuzMatResize, yuzMatGray, Imgproc.COLOR_RGB2GRAY);	 
+	    	
 	    	MatOfByte matOfByte = new MatOfByte();   	
 	    	Imgcodecs.imencode(".jpg", yuzMatGray, matOfByte);
 	    	matOfByteArr = matOfByte.toArray();
