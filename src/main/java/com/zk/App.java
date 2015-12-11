@@ -250,6 +250,7 @@ public class App {
 		taniBut = new JButton("Yüz Tanı");
 		taniBut.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent event) {
+				tanimaSonucu.setText("Kimlik tespiti yapılıyor. Lütfen bekleyiniz...");
 				YuzTaniyici.tani();
 			}
 		});
@@ -310,7 +311,7 @@ public class App {
 			}  
 		}
 		else{
-			System.out.println("Görüntü yakalama açılamadı!");
+			System.out.println("Görüntü okunamadı!");
 		}		
 	}
 	
