@@ -302,7 +302,6 @@ public class App {
 					ImageIcon imageIcon = new ImageIcon(tempImage, "Alınan görüntü");
 					imageView.setIcon(imageIcon);
 					dialog.pack();  
-					//break;
 				}  
 				else{  
 					System.out.println("Görüntü alınamadı!"); 
@@ -338,8 +337,7 @@ public class App {
 	    	MatOfByte matOfByte = new MatOfByte();   	
 	    	Imgcodecs.imencode(".jpg", yuzMatGray, matOfByte);
 	    	matOfByteArr = matOfByte.toArray();
-	    }
-	    
+	    }	    
 	}
 	
 	private static void yuzKaydet(){    		
