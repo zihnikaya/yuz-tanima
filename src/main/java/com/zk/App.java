@@ -203,15 +203,6 @@ public class App {
 			}
 		});
 		silButton.setAlignmentX(Component.RIGHT_ALIGNMENT);		
-		/*
-		JButton ogretButton = new JButton("Eğit");
-		ogretButton.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent event) {
-				//sil();
-			}
-		});
-		ogretButton.setAlignmentX(Component.RIGHT_ALIGNMENT);		
-		*/
 		GridLayout gridRowLayout = new GridLayout(1,0);
 		gridRowLayout.setVgap(5);
 		JPanel buttonsPanel = new JPanel(gridRowLayout);
@@ -245,7 +236,6 @@ public class App {
 		});
 		taniBut.setAlignmentX(Component.CENTER_ALIGNMENT);		
 		GridLayout gridRowLayout = new GridLayout(3,0);
-		//gridRowLayout.setVgap(5);
 		JPanel buttonsPanel = new JPanel(gridRowLayout);
 		buttonsPanel.add(taniBut);
 		tanimaSonucu = new JLabel("",SwingConstants.CENTER);
@@ -267,7 +257,6 @@ public class App {
 		});
 		sinGirBut.setAlignmentX(Component.CENTER_ALIGNMENT);		
 		GridLayout gridRowLayout = new GridLayout(3,0);
-		//gridRowLayout.setVgap(5);
 		JPanel buttonsPanel = new JPanel(gridRowLayout);
 		buttonsPanel.add(sinGirBut);
 		GridBagConstraints c = new GridBagConstraints();

@@ -46,7 +46,7 @@ public class BufImg {
         YuzDAO yuzDAO = new YuzDAO();
         byte[] imgBlob  = yuzDAO.bul(36);
         System.out.println("Blob:" + Arrays.toString(imgBlob));
-        Mat img = Imgproc.imdecode(data);
+        //Mat img = Imgproc.imdecode(data);
 		Mat imgRgb  = new Mat();
 		Mat imgRgb1 = new Mat();
         Size boyutlar = new Size(10,10);
@@ -59,7 +59,7 @@ public class BufImg {
 		//System.out.println("gör data:"+Arrays.toString(targetPixels));
         System.out.println(Arrays.toString(toBufferedImage(imgGray)));
         System.out.println("blob"+Arrays.toString(imgBlob));
-        */
+        
 	}
 
 }

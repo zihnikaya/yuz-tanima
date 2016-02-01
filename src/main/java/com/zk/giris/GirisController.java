@@ -8,7 +8,7 @@ import com.zk.util.Util;
 
 public final class GirisController implements ActionListener {
 
-	static final String GIRIS = "Y�netici Giri�i";
+	static final String GIRIS = "Yönetici Girişi";
 	  
 	static final String VAZGEC = "Vazge�";	
 	

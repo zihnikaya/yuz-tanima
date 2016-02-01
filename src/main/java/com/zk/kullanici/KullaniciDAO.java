@@ -23,9 +23,9 @@ import com.zk.util.Util;
 public final class KullaniciDAO {
 	
    static final String JDBC_DRIVER = "com.mysql.jdbc.Driver";  
-   static final String DB_URL = "jdbc:mysql://localhost/yuz_tanima?useUnicode=true&characterEncoding=UTF-8";
+   static final String DB_URL = "jdbc:mysql://10.5.20.12/yuz_tanima?useUnicode=true&characterEncoding=UTF-8";
 
-   static final String USER = "root";
+   static final String USER = "zkaya";
    static final String PASS = "";
 
    Connection conn = null;
@@ -146,7 +146,7 @@ public final class KullaniciDAO {
 	      conn = DriverManager.getConnection(DB_URL, USER, PASS);
 	      stmt = conn.createStatement();
 	      String sql;
-	      sql = "SELECT id, ogrenci_no, ad, soyad,bolum FROM kullanici";
+	      sql = "SELECT id, ogrenci_no, ad, soyad, bolum FROM kullanici";
 	      ResultSet rs = stmt.executeQuery(sql);	      
 	      while(rs.next()){
 	    	 String id = rs.getString("id");
@@ -296,8 +296,6 @@ public final class KullaniciDAO {
 	      }
 	   }
 	}   
-  
-  
   
   private void appendTo(StringBuilder aText, Object aField, String aAppend) {
     if (Util.textAra(Util.format(aField))) {

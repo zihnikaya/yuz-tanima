@@ -24,10 +24,10 @@ import java.util.logging.Logger;
 public final class YuzTanimaDAO {
 	
    static final String JDBC_DRIVER = "com.mysql.jdbc.Driver";  
-   static final String DB_URL = "jdbc:mysql://localhost/yuz_tanima";
+   static final String DB_URL = "jdbc:mysql://10.5.20.12/yuz_tanima";
 
    static final String USER = "root";
-   static final String PASS = "kaya";
+   static final String PASS = "";
 
    Connection conn = null;
    Statement stmt = null;   
